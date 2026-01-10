@@ -8,10 +8,14 @@ interface Appointment {
 
 // Helper function to format the date as DD/MM/YYYY
 const formatIsraeliDate = (dateString: string) => {
+  // The dateString (e.g., "2025-01-12") is correctly treated as midnight UTC.
   const date = new Date(dateString);
-  const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
-  const year = date.getFullYear();
+  
+  // Use getUTC... methods to extract date parts from the UTC value,
+  // ignoring the server's local timezone. This is the robust way to prevent timezone bugs.
+  const day = String(date.getUTCDate()).padStart(2, '0');
+  const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // UTC months are also 0-indexed
+  const year = date.getUTCFullYear();
   return `${day}/${month}/${year}`;
 };
 
