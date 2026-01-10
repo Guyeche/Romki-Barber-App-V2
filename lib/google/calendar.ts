@@ -24,20 +24,6 @@ const auth = new google.auth.GoogleAuth({
 
 const calendar = google.calendar({ version: 'v3', auth });
 
-function getEventEndTime(startTime: string, service: string): string {
-    const durationMap: { [key: string]: number } = {
-        'Haircut': 30,
-        'Beard Trim': 20,
-        'Haircut & Beard Trim': 50,
-    };
-    const duration = durationMap[service] || 30; // Default to 30 mins if service not found
-    const [hours, minutes] = startTime.split(':').map(Number);
-    const startDate = new Date();
-    startDate.setHours(hours, minutes, 0, 0);
-    const endDate = new Date(startDate.getTime() + duration * 60000);
-    return endDate.toTimeString().split(' ')[0].substring(0, 5);
-}
-
 export async function createCalendarEvent(appointment: Appointment) {
   if (!calendarId) {
     console.error('GOOGLE_CALENDAR_ID is not set. Skipping calendar event creation.');
@@ -48,9 +34,14 @@ export async function createCalendarEvent(appointment: Appointment) {
   const [hours, minutes] = appointment.time.split(':').map(Number);
   const startTime = new Date(year, month - 1, day, hours, minutes);
 
-  const endTimeString = getEventEndTime(appointment.time, appointment.service);
-  const [endHours, endMinutes] = endTimeString.split(':').map(Number);
-  const endTime = new Date(year, month - 1, day, endHours, endMinutes);
+  const durationMap: { [key: string]: number } = {
+      'Haircut': 20,
+      'Beard Trim': 10,
+      'Haircut & Beard Trim': 30,
+  };
+  const duration = durationMap[appointment.service] || 30; // Default to 30 mins
+
+  const endTime = new Date(startTime.getTime() + duration * 60000);
 
   const event = {
     summary: `Appointment: ${appointment.customer_name} - ${appointment.service}`,

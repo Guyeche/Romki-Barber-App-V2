@@ -28,14 +28,8 @@ const schema = z.object({
 
 // Helper to format date to DD/MM/YYYY
 const formatIsraeliDate = (dateString: string) => {
-  // The dateString (e.g., "2025-01-12") is correctly treated as midnight UTC.
-  const date = new Date(dateString);
-  
-  // Use getUTC... methods to extract date parts from the UTC value,
-  // ignoring the server's local timezone. This is the robust way to prevent timezone bugs.
-  const day = String(date.getUTCDate()).padStart(2, '0');
-  const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // UTC months are also 0-indexed
-  const year = date.getUTCFullYear();
+  // dateString is "YYYY-MM-DD"
+  const [year, month, day] = dateString.split('-');
   return `${day}/${month}/${year}`;
 };
 
@@ -94,7 +88,7 @@ export async function bookAppointment(prevState: AppointmentFormState | undefine
         service: service,
         status: 'confirmed' // Or 'pending' if you have a confirmation step
       }])
-      .select()
+      .select('id, customer_name, email, date, time, service')
       .single();
 
     if (insertError) {

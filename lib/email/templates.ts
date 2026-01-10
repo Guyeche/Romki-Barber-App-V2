@@ -8,14 +8,8 @@ interface Appointment {
 
 // Helper function to format the date as DD/MM/YYYY
 const formatIsraeliDate = (dateString: string) => {
-  // The dateString (e.g., "2025-01-12") is correctly treated as midnight UTC.
-  const date = new Date(dateString);
-  
-  // Use getUTC... methods to extract date parts from the UTC value,
-  // ignoring the server's local timezone. This is the robust way to prevent timezone bugs.
-  const day = String(date.getUTCDate()).padStart(2, '0');
-  const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // UTC months are also 0-indexed
-  const year = date.getUTCFullYear();
+  // dateString is in "YYYY-MM-DD" format
+  const [year, month, day] = dateString.split('-');
   return `${day}/${month}/${year}`;
 };
 
@@ -26,7 +20,9 @@ export const getCustomerConfirmationHTML = (appointment: Appointment) => `
   <p>Thank you for choosing Romki Barber Shop.</p>
 `;
 
-export const getAdminNotificationHTML = (appointment: Appointment) => `
+export const getAdminNotificationHTML = (appointment: Appointment) => {
+  console.log('Admin notification email appointment data:', appointment);
+  return `
   <h1>New Booking</h1>
   <p>A new appointment has been booked:</p>
   <ul>
@@ -36,6 +32,7 @@ export const getAdminNotificationHTML = (appointment: Appointment) => `
     <li><strong>Time:</strong> ${appointment.time}</li>
   </ul>
 `;
+};
 
 export const getCancellationNoticeHTML = (appointment: Appointment) => `
   <h1>Appointment Canceled</h1>

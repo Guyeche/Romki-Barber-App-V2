@@ -7,6 +7,7 @@ CREATE TABLE appointments (
     email TEXT,
     date DATE NOT NULL,
     time TIME NOT NULL,
+    service TEXT,
     status TEXT DEFAULT 'pending',
     event_id TEXT, -- For Google Calendar Event ID
     UNIQUE (date, time) -- Prevent double booking

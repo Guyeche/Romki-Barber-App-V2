@@ -53,7 +53,7 @@ export default function BookingPage() {
             </div>
             <div>
               <DateTimePicker onDateTimeChange={handleDateTimeChange} />
-              <input type="hidden" name="date" value={dateTime.date ? dateTime.date.toISOString().split('T')[0] : ''} />
+              <input type="hidden" name="date" value={dateTime.date ? `${dateTime.date.getFullYear()}-${String(dateTime.date.getMonth() + 1).padStart(2, '0')}-${String(dateTime.date.getDate()).padStart(2, '0')}` : ''} />
               <input type="hidden" name="time" value={dateTime.time || ''} />
             </div>
             <div className="text-center">

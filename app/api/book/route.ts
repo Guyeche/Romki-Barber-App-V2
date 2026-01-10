@@ -2,6 +2,7 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { Resend } from 'resend';
+import { getAdminNotificationHTML, getCustomerConfirmationHTML } from '../../../lib/email/templates';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -9,10 +10,11 @@ const supabase = createClient(
 );
 
 const resend = new Resend(process.env.RESEND_API_KEY);
+const fromEmail = process.env.RESEND_FROM_EMAIL;
 
 export async function POST(request: Request) {
   try {
-    const { customer_name, phone, email, date, time } = await request.json();
+    const { customer_name, phone, email, date, time, service } = await request.json();
 
     // --- Start: Debugging Double-Booking ---
     console.log('Checking for existing booking with:', { date, time });
@@ -38,8 +40,8 @@ export async function POST(request: Request) {
     // Insert the new appointment
     const { data: newAppointment, error: insertError } = await supabase
       .from('appointments')
-      .insert([{ customer_name, phone, email, date, time, status: 'pending' }])
-      .select()
+      .insert([{ customer_name, phone, email, date, time, service, status: 'pending' }])
+      .select('id, customer_name, email, date, time, service')
       .single();
 
     if (insertError) {
@@ -52,27 +54,19 @@ export async function POST(request: Request) {
       // Send email notification to the barber
       if (process.env.BARBER_ADMIN_EMAIL) {
         await resend.emails.send({
-          from: 'onboarding@resend.dev',
+          from: fromEmail!,
           to: process.env.BARBER_ADMIN_EMAIL,
           subject: 'New Booking Confirmation',
-          html: `
-            <h1>New Booking</h1>
-            <p><strong>Name:</strong> ${customer_name}</p>
-            <p><strong>Date:</strong> ${date}</p>
-            <p><strong>Time:</strong> ${time}</p>
-          `,
+          html: getAdminNotificationHTML(newAppointment),
         });
       }
 
       // Send confirmation email to the customer
       await resend.emails.send({
-        from: 'onboarding@resend.dev',
+        from: fromEmail!,
         to: email,
         subject: 'Your Appointment is Confirmed!',
-        html: `
-          <h1>Appointment Confirmed</h1>
-          <p>Hello ${customer_name}, your appointment is confirmed for ${date} at ${time}.</p>
-        `,
+        html: getCustomerConfirmationHTML(newAppointment),
       });
     } catch (emailError) {
       console.error('Failed to send emails:', emailError);

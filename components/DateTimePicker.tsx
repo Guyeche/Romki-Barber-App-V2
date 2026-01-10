@@ -48,7 +48,10 @@ export default function DateTimePicker({ onDateTimeChange }: DateTimePickerProps
 
       setIsLoading(true);
       setBookedTimes([]);
-      const dateString = selectedDay.toISOString().split('T')[0];
+      const year = selectedDay.getFullYear();
+      const month = String(selectedDay.getMonth() + 1).padStart(2, '0');
+      const day = String(selectedDay.getDate()).padStart(2, '0');
+      const dateString = `${year}-${month}-${day}`;
 
       try {
         // This endpoint is no longer necessary if we check for booked times directly
