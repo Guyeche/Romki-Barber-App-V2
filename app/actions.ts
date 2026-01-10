@@ -28,10 +28,16 @@ const schema = z.object({
 
 // Helper to format date to DD/MM/YYYY
 const formatIsraeliDate = (dateString: string) => {
+  // The dateString (e.g., "2025-01-12") is treated as midnight UTC by the Date constructor.
+  // This causes off-by-one errors in timezones ahead of UTC.
   const date = new Date(dateString);
-  const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
-  const year = date.getFullYear();
+  
+  // Adjust for the timezone offset to bring the date back to the user's intended day.
+  const adjustedDate = new Date(date.valueOf() + date.getTimezoneOffset() * 60 * 1000);
+
+  const day = String(adjustedDate.getDate()).padStart(2, '0');
+  const month = String(adjustedDate.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+  const year = adjustedDate.getFullYear();
   return `${day}/${month}/${year}`;
 };
 
