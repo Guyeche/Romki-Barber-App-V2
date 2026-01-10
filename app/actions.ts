@@ -91,7 +91,7 @@ export async function bookAppointment(prevState: AppointmentFormState | undefine
         email: email,
         date: date,
         time: time,
-        // service: service, // Assuming service maps to a duration later
+        service: service,
         status: 'confirmed' // Or 'pending' if you have a confirmation step
       }])
       .select()
