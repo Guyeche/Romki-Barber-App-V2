@@ -1,8 +1,8 @@
 import { supabase } from '../../../lib/server/supabase'
-import { logout } from '../../admin/actions'
+import { logout } from '../../actions'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-import CancelButton from '../../admin/CancelButton'
+import CancelButton from './CancelButton';
 import { getTranslations, getLocale } from 'next-intl/server'
 
 // This tells Next.js not to cache the page, so we always see the latest data.

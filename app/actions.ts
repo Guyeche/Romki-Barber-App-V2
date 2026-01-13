@@ -6,8 +6,12 @@ import { resend } from '../lib/resend'
 import { getCustomerConfirmationHTML, getAdminNotificationHTML } from '../lib/email/templates';
 import { createCalendarEvent } from '../lib/google/calendar';
 import { getLocale } from 'next-intl/server';
+import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
+import { revalidatePath } from 'next/cache'
 
-// Define the shape of the form state
+// --- INTERFACES & SCHEMAS ---
+
 interface AppointmentFormState {
   message: string;
   errors?: {
@@ -29,14 +33,129 @@ const schema = z.object({
 
 // Helper to format date to DD/MM/YYYY
 const formatIsraeliDate = (dateString: string) => {
-  // dateString is "YYYY-MM-DD"
   const [year, month, day] = dateString.split('-');
   return `${day}/${month}/${year}`;
 };
 
+// --- ADMIN ACTIONS (Login, Logout, Cancel) ---
+
+// 1. LOGIN ACTION
+export async function login(prevState: any, formData: FormData) {
+  const email = formData.get('email') as string
+  const password = formData.get('password') as string
+
+  // LOAD CREDENTIALS FROM .ENV
+  const adminEmail = process.env.BARBER_ADMIN_EMAIL;
+  const adminPassword = process.env.ADMIN_PASSWORD;
+
+  // Basic check to ensure env vars are set
+  if (!adminEmail || !adminPassword) {
+    console.error('Missing Admin Credentials in .env file');
+    return { message: 'Server configuration error' };
+  }
+
+  // Compare input against .env values
+  if (email === adminEmail && password === adminPassword) {
+    
+    // Set a cookie to remember the user is logged in
+    (await cookies()).set('admin_session', 'true', { 
+      httpOnly: true, 
+      path: '/' 
+    })
+    
+    redirect('/admin')
+  } else {
+    return { message: 'Invalid email or password' }
+  }
+}
+
+// 2. LOGOUT ACTION
+export async function logout() {
+  (await cookies()).delete('admin_session')
+  redirect('/admin/login')
+}
+
+// 3. CANCEL APPOINTMENT ACTION (Updated with Email Notification)
+export async function cancelAppointment(formData: FormData) {
+  const id = formData.get('id')
+  
+  if (!id) return
+
+  console.log(`Canceling appointment with ID: ${id}`)
+
+  // A. FETCH the appointment details first (so we have the email)
+  const { data: appointment, error: fetchError } = await supabase
+    .from('appointments')
+    .select('customer_name, email, date, time') 
+    .eq('id', id)
+    .single();
+
+  if (fetchError || !appointment) {
+     console.error("Could not find appointment to cancel:", fetchError);
+     return;
+  }
+
+  // B. DELETE from Supabase
+  const { error: deleteError } = await supabase
+    .from('appointments')
+    .delete()
+    .eq('id', id)
+
+  if (deleteError) {
+    console.error('Error deleting appointment:', deleteError)
+    return
+  }
+
+  // C. SEND CANCELLATION EMAIL
+  const fromEmail = process.env.RESEND_FROM_EMAIL;
+  if (fromEmail) {
+      try {
+        await resend.emails.send({
+          from: fromEmail,
+          to: appointment.email,
+          subject: 'Appointment Cancelled',
+          // Simple HTML message. You can make this fancier later if you want.
+          html: `
+            <div style="font-family: sans-serif; padding: 20px;">
+              <h2>Appointment Cancelled</h2>
+              <p>Hi ${appointment.customer_name},</p>
+              <p>Your appointment on <strong>${formatIsraeliDate(appointment.date)}</strong> at <strong>${appointment.time}</strong> has been cancelled.</p>
+              <p>If you have any questions, please contact us.</p>
+            </div>
+          `,
+        });
+        console.log("Cancellation email sent to:", appointment.email);
+      } catch (emailError) {
+        console.error("Failed to send cancellation email:", emailError);
+      }
+  }
+
+  // Refresh the admin page data
+  revalidatePath('/admin')
+}
+
+// --- PUBLIC ACTIONS (Booking) ---
+
 export async function bookAppointment(prevState: AppointmentFormState | undefined, formData: FormData): Promise<AppointmentFormState> {
   const locale = await getLocale();
-  const messages = await import(`../messages/${locale}.json`).then(m => m.default.booking);
+  let messages;
+  try {
+     const m = await import(`../messages/${locale}.json`);
+     messages = m.default.booking;
+  } catch (e) {
+     console.error('Translation file missing, using fallbacks');
+     messages = { 
+        validationFailed: 'Validation failed',
+        serverConfigError: 'Server config error',
+        dayUnavailable: 'Day unavailable',
+        timeSlotBooked: 'Time slot booked',
+        success: 'Booking confirmed',
+        failedCalendarEvent: 'Calendar event failed',
+        criticalError: 'Critical error',
+        serverError: 'Server error',
+        errorOccurred: 'Error occurred'
+     };
+  }
   
   const validatedFields = schema.safeParse({
     name: formData.get('name'),
@@ -54,11 +173,13 @@ export async function bookAppointment(prevState: AppointmentFormState | undefine
   }
 
   const { name, email, date, time, service } = validatedFields.data;
+  
+  // Use the email from .env
   const adminEmail = process.env.BARBER_ADMIN_EMAIL;
   const fromEmail = process.env.RESEND_FROM_EMAIL;
 
-  if (!fromEmail) {
-      console.error('CRITICAL: RESEND_FROM_EMAIL environment variable is not set.');
+  if (!fromEmail || !adminEmail) {
+      console.error('CRITICAL: Email environment variables are not set.');
       return { message: messages.serverConfigError };
   }
 
@@ -72,7 +193,7 @@ export async function bookAppointment(prevState: AppointmentFormState | undefine
       .eq('date', date)
       .single();
 
-    if (blockedDayError && blockedDayError.code !== 'PGRST116') { // PGRST116: no rows found
+    if (blockedDayError && blockedDayError.code !== 'PGRST116') {
       throw new Error('Database error while checking for blocked days.');
     }
 
@@ -81,7 +202,6 @@ export async function bookAppointment(prevState: AppointmentFormState | undefine
     }
 
     // 2. Try to insert the new appointment.
-    // The UNIQUE constraint on (date, time) will prevent double bookings.
     const { data: newAppointment, error: insertError } = await supabase
       .from('appointments')
       .insert([{
@@ -90,13 +210,13 @@ export async function bookAppointment(prevState: AppointmentFormState | undefine
         date: date,
         time: time,
         service: service,
-        status: 'confirmed' // Or 'pending' if you have a confirmation step
+        status: 'confirmed' 
       }])
       .select('id, customer_name, email, date, time, service')
       .single();
 
     if (insertError) {
-      if (insertError.code === '23505') { // Unique violation
+      if (insertError.code === '23505') {
         return { message: messages.timeSlotBooked };
       }
       console.error('Supabase insert error:', insertError);
@@ -107,15 +227,15 @@ export async function bookAppointment(prevState: AppointmentFormState | undefine
 
     // 3. Send emails
     try {
-      if (adminEmail) {
-        await resend.emails.send({
-          from: fromEmail,
-          to: adminEmail,
-          subject: 'New Booking Notification',
-          html: getAdminNotificationHTML(newAppointment),
-        });
-      }
+      // Send to Admin (romarlaki10@gmail.com)
+      await resend.emails.send({
+        from: fromEmail,
+        to: adminEmail, 
+        subject: 'New Booking Notification',
+        html: getAdminNotificationHTML(newAppointment),
+      });
 
+      // Send to Customer
       await resend.emails.send({
         from: fromEmail,
         to: email,
@@ -125,7 +245,6 @@ export async function bookAppointment(prevState: AppointmentFormState | undefine
 
     } catch (emailError) {
       console.error('Critical error: Emails failed to send after booking was created:', emailError);
-      // Re-throw to trigger the rollback in the outer catch block
       throw new Error('Failed to send confirmation emails.');
     }
 
@@ -134,14 +253,12 @@ export async function bookAppointment(prevState: AppointmentFormState | undefine
       await createCalendarEvent(newAppointment);
     } catch (calendarError) {
         console.error('Failed to create Google Calendar event:', calendarError);
-        // Re-throw to trigger the rollback in the outer catch block
         throw new Error(messages.failedCalendarEvent);
     }
 
     return { message: messages.success.replace('{{date}}', formatIsraeliDate(date)).replace('{{time}}', time) };
 
   } catch (error) {
-    // If any step after the insert fails, we need to roll back the booking.
     if (newAppointmentId) {
       console.log(`Attempting to roll back booking with ID: ${newAppointmentId}`);
       const { error: deleteError } = await supabase
@@ -150,7 +267,7 @@ export async function bookAppointment(prevState: AppointmentFormState | undefine
         .eq('id', newAppointmentId);
 
       if (deleteError) {
-        console.error('CRITICAL: FAILED TO ROLL BACK BOOKING. MANUAL INTERVENTION REQUIRED.', deleteError);
+        console.error('CRITICAL: FAILED TO ROLL BACK BOOKING.', deleteError);
         return { message: messages.criticalError };
       }
     }

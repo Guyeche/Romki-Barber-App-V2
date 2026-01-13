@@ -1,7 +1,7 @@
 'use client'
 
 import { useFormState, useFormStatus } from 'react-dom'
-import { login } from '../../../admin/actions'
+import { login } from '../../../actions'
 import { useTranslations } from 'next-intl'
 
 function SubmitButton() {
@@ -39,8 +39,8 @@ export default function LoginPage() {
             />
           </div>
           
-          {state?.error && (
-              <p className="text-sm text-red-500">{state.error}</p>
+          {state?.message && (
+              <p className="text-sm text-red-500">{state.message}</p>
           )}
 
           <SubmitButton />

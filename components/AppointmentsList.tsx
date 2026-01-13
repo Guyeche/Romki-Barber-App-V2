@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useOptimistic } from 'react';
 import { supabase } from '../lib/supabase';
-import { cancelAppointment } from '../app/admin/actions'; 
+import { cancelAppointment } from '../app/actions'; 
 
 interface Appointment {
   id: number;

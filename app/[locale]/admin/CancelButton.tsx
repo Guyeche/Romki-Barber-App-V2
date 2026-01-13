@@ -1,6 +1,6 @@
 'use client'
 
-import { cancelAppointment } from '../../admin/actions'
+import { cancelAppointment } from '../../actions'
 import { useTranslations } from 'next-intl'
 
 export default function CancelButton({ id }: { id: number }) {

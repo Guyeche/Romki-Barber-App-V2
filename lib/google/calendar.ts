@@ -1,5 +1,5 @@
 import { google } from 'googleapis';
-import { supabase } from '../server/supabase';
+import { supabase } from '../server/supabase'; // CHECK THIS PATH: Make sure it points to your actual supabase file
 
 // Define a specific type for the appointment object
 interface Appointment {
@@ -11,25 +11,32 @@ interface Appointment {
   time: string; // Format: HH:MM
 }
 
-const calendarId = process.env.GOOGLE_CALENDAR_ID;
-const serviceAccount = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY || '{}');
-
-const auth = new google.auth.GoogleAuth({
-  credentials: {
-    client_email: serviceAccount.client_email,
-    private_key: serviceAccount.private_key,
-  },
-  scopes: ['https://www.googleapis.com/auth/calendar.events'],
-});
-
-const calendar = google.calendar({ version: 'v3', auth });
-
 export async function createCalendarEvent(appointment: Appointment) {
-  if (!calendarId) {
-    console.error('GOOGLE_CALENDAR_ID is not set. Skipping calendar event creation.');
+  // 1. Load variables from .env
+  const calendarId = process.env.GOOGLE_CALENDAR_ID;
+  const clientEmail = process.env.GOOGLE_CLIENT_EMAIL;
+  const privateKey = process.env.GOOGLE_PRIVATE_KEY;
+
+  if (!calendarId || !clientEmail || !privateKey) {
+    console.error('MISSING GOOGLE ENV VARS: Check GOOGLE_CALENDAR_ID, GOOGLE_CLIENT_EMAIL, or GOOGLE_PRIVATE_KEY');
     return;
   }
 
+  // 2. Format the Private Key correctly (Fixes "Invalid JWT Signature")
+  const formattedKey = privateKey.replace(/\\n/g, '\n');
+
+  // 3. Authenticate using GoogleAuth (Fixes "Expected 0-1 arguments" error)
+  const auth = new google.auth.GoogleAuth({
+    credentials: {
+      client_email: clientEmail,
+      private_key: formattedKey,
+    },
+    scopes: ['https://www.googleapis.com/auth/calendar.events'],
+  });
+
+  const calendar = google.calendar({ version: 'v3', auth });
+
+  // 4. Calculate Time
   const [year, month, day] = appointment.date.split('-').map(Number);
   const [hours, minutes] = appointment.time.split(':').map(Number);
   const startTime = new Date(year, month - 1, day, hours, minutes);
@@ -43,6 +50,7 @@ export async function createCalendarEvent(appointment: Appointment) {
 
   const endTime = new Date(startTime.getTime() + duration * 60000);
 
+  // 5. Create Event Object
   const event = {
     summary: `Appointment: ${appointment.customer_name} - ${appointment.service}`,
     description: `Customer: ${appointment.customer_name}\nEmail: ${appointment.email}\nService: ${appointment.service}`,
@@ -57,13 +65,14 @@ export async function createCalendarEvent(appointment: Appointment) {
   };
 
   try {
+    // 6. Send to Google
     const createdEvent = await calendar.events.insert({
         calendarId: calendarId,
         requestBody: event,
     });
 
+    // 7. Save the Google Event ID back to Supabase
     if (createdEvent && createdEvent.data.id) {
-        // Update the appointment with the Google Calendar event ID
         await supabase
             .from('appointments')
             .update({ event_id: createdEvent.data.id })
@@ -75,21 +84,34 @@ export async function createCalendarEvent(appointment: Appointment) {
 }
 
 export async function deleteCalendarEvent(eventId: string) {
-  if (!calendarId) {
-    console.error('GOOGLE_CALENDAR_ID is not set. Skipping calendar event deletion.');
+  const calendarId = process.env.GOOGLE_CALENDAR_ID;
+  const clientEmail = process.env.GOOGLE_CLIENT_EMAIL;
+  const privateKey = process.env.GOOGLE_PRIVATE_KEY;
+
+  if (!calendarId || !clientEmail || !privateKey || !eventId) {
+    console.warn('Skipping calendar deletion: Missing env vars or eventId');
     return;
   }
 
-  if (!eventId) {
-    console.warn('No event_id provided for deletion. Skipping.');
-    return;
-  }
+  const formattedKey = privateKey.replace(/\\n/g, '\n');
+
+  // Authenticate using GoogleAuth
+  const auth = new google.auth.GoogleAuth({
+    credentials: {
+      client_email: clientEmail,
+      private_key: formattedKey,
+    },
+    scopes: ['https://www.googleapis.com/auth/calendar.events'],
+  });
+
+  const calendar = google.calendar({ version: 'v3', auth });
 
   try {
     await calendar.events.delete({
         calendarId: calendarId,
         eventId: eventId,
     });
+    console.log(`Deleted Google Calendar event: ${eventId}`);
   } catch (error) {
     console.error('Error deleting calendar event:', error);
   }
