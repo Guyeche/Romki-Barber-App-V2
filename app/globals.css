@@ -3,3 +3,37 @@
 body {
   @apply bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100;
 }
+
+/* RTL Support */
+.rtl {
+  direction: rtl;
+}
+
+.ltr {
+  direction: ltr;
+}
+
+/* RTL-specific adjustments */
+.rtl .text-left {
+  text-align: right;
+}
+
+.rtl .text-right {
+  text-align: left;
+}
+
+/* RTL margin and padding utilities */
+.rtl .ml-auto {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+.rtl .mr-auto {
+  margin-right: 0;
+  margin-left: auto;
+}
+
+/* RTL flex utilities */
+.rtl .flex-row-reverse {
+  flex-direction: row-reverse;
+}

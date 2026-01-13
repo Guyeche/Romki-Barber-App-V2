@@ -1,0 +1,72 @@
+{
+  "common": {
+    "bookNow": "הזמן עכשיו",
+    "cancel": "ביטול",
+    "logout": "התנתק",
+    "login": "התחבר",
+    "loading": "טוען...",
+    "confirm": "אישור",
+    "actions": "פעולות",
+    "name": "שם",
+    "email": "אימייל",
+    "service": "שירות",
+    "date": "תאריך",
+    "time": "שעה",
+    "customer": "לקוח",
+    "dateTime": "תאריך ושעה"
+  },
+  "home": {
+    "title": "מספרת רומקי",
+    "description": "השיער שלך, התשוקה שלנו. הזמן תור עכשיו וחווה את התספורת הטובה ביותר בחייך.",
+    "bookNow": "הזמן עכשיו"
+  },
+  "booking": {
+    "title": "הזמן תור",
+    "yourName": "השם שלך",
+    "yourEmail": "האימייל שלך",
+    "selectService": "שירות",
+    "selectTime": "בחר שעה",
+    "loadingTimes": "טוען שעות...",
+    "booking": "מזמין...",
+    "bookAppointment": "הזמן תור",
+    "bookAnother": "הזמן תור נוסף",
+    "services": {
+      "haircut": "תספורת",
+      "beardTrim": "תספורת זקן",
+      "haircutBeardTrim": "תספורת ותספורת זקן"
+    },
+    "success": "הצלחה! התור שלך אושר ל-{{date}} בשעה {{time}}.",
+    "validationFailed": "האימות נכשל. אנא בדוק את הקלט שלך.",
+    "timeSlotBooked": "משבצת זמן זו כבר תפוסה. אנא בחר שעה אחרת.",
+    "dayUnavailable": "יום זה אינו זמין להזמנה. אנא בחר תאריך אחר.",
+    "serverError": "אירעה שגיאת שרת בלתי צפויה.",
+    "errorOccurred": "אירעה שגיאה: {{message}} אנא נסה שוב.",
+    "serverConfigError": "שגיאת תצורת שרת. לא ניתן לשלוח אימיילים.",
+    "criticalError": "אירעה שגיאת שרת קריטית ולא הצלחנו לשמור את ההזמנה במלואה. אנא צור קשר ישירות.",
+    "failedCalendarEvent": "נכשל ביצירת אירוע יומן."
+  },
+  "admin": {
+    "dashboard": "לוח בקרה למנהל",
+    "noAppointments": "אין תורים מתוזמנים.",
+    "cancelConfirm": "האם אתה בטוח שברצונך לבטל תור זה?",
+    "customer": "לקוח",
+    "service": "שירות",
+    "dateTime": "תאריך ושעה",
+    "actions": "פעולות",
+    "cancel": "ביטול",
+    "logout": "התנתק",
+    "login": {
+      "title": "התחברות מנהל",
+      "password": "סיסמה",
+      "loggingIn": "מתחבר...",
+      "login": "התחבר"
+    }
+  },
+  "appointments": {
+    "title": "תורים נוכחיים",
+    "cancelConfirm": "האם אתה בטוח שברצונך לבטל תור זה?"
+  },
+  "dateTime": {
+    "selectTime": "בחר שעה"
+  }
+}

@@ -5,6 +5,7 @@ import { supabase } from '../lib/server/supabase'
 import { resend } from '../lib/resend'
 import { getCustomerConfirmationHTML, getAdminNotificationHTML } from '../lib/email/templates';
 import { createCalendarEvent } from '../lib/google/calendar';
+import { getLocale } from 'next-intl/server';
 
 // Define the shape of the form state
 interface AppointmentFormState {
@@ -34,6 +35,9 @@ const formatIsraeliDate = (dateString: string) => {
 };
 
 export async function bookAppointment(prevState: AppointmentFormState | undefined, formData: FormData): Promise<AppointmentFormState> {
+  const locale = await getLocale();
+  const messages = await import(`../messages/${locale}.json`).then(m => m.default.booking);
+  
   const validatedFields = schema.safeParse({
     name: formData.get('name'),
     email: formData.get('email'),
@@ -44,7 +48,7 @@ export async function bookAppointment(prevState: AppointmentFormState | undefine
 
   if (!validatedFields.success) {
     return {
-      message: 'Validation failed. Please check your input.',
+      message: messages.validationFailed,
       errors: validatedFields.error.flatten().fieldErrors,
     }
   }
@@ -55,7 +59,7 @@ export async function bookAppointment(prevState: AppointmentFormState | undefine
 
   if (!fromEmail) {
       console.error('CRITICAL: RESEND_FROM_EMAIL environment variable is not set.');
-      return { message: 'Server configuration error. Could not send emails.' };
+      return { message: messages.serverConfigError };
   }
 
   let newAppointmentId: number | null = null;
@@ -73,7 +77,7 @@ export async function bookAppointment(prevState: AppointmentFormState | undefine
     }
 
     if (blockedDay) {
-      return { message: 'This day is unavailable for booking. Please choose another date.' };
+      return { message: messages.dayUnavailable };
     }
 
     // 2. Try to insert the new appointment.
@@ -93,7 +97,7 @@ export async function bookAppointment(prevState: AppointmentFormState | undefine
 
     if (insertError) {
       if (insertError.code === '23505') { // Unique violation
-        return { message: 'This time slot is already booked. Please choose another time.' };
+        return { message: messages.timeSlotBooked };
       }
       console.error('Supabase insert error:', insertError);
       throw new Error('Failed to create the appointment in the database.');
@@ -131,10 +135,10 @@ export async function bookAppointment(prevState: AppointmentFormState | undefine
     } catch (calendarError) {
         console.error('Failed to create Google Calendar event:', calendarError);
         // Re-throw to trigger the rollback in the outer catch block
-        throw new Error('Failed to create calendar event.');
+        throw new Error(messages.failedCalendarEvent);
     }
 
-    return { message: `Success! Your appointment is confirmed for ${formatIsraeliDate(date)} at ${time}.` };
+    return { message: messages.success.replace('{{date}}', formatIsraeliDate(date)).replace('{{time}}', time) };
 
   } catch (error) {
     // If any step after the insert fails, we need to roll back the booking.
@@ -147,12 +151,12 @@ export async function bookAppointment(prevState: AppointmentFormState | undefine
 
       if (deleteError) {
         console.error('CRITICAL: FAILED TO ROLL BACK BOOKING. MANUAL INTERVENTION REQUIRED.', deleteError);
-        return { message: 'A critical server error occurred and we could not fully save your booking. Please contact us directly.' };
+        return { message: messages.criticalError };
       }
     }
     
     console.error('An unexpected error occurred in bookAppointment:', error);
-    const errorMessage = error instanceof Error ? error.message : 'An unexpected server error occurred.';
-    return { message: `An error occurred: ${errorMessage} Please try again.` };
+    const errorMessage = error instanceof Error ? error.message : messages.serverError;
+    return { message: messages.errorOccurred.replace('{{message}}', errorMessage) };
   }
 }

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { DayPicker } from 'react-day-picker'
 import 'react-day-picker/dist/style.css'
 import { supabase } from '../lib/supabase'
+import { useTranslations } from 'next-intl'
 
 const businessHours = {
   start: 9,
@@ -20,6 +21,7 @@ export default function DateTimePicker({ onDateTimeChange }: DateTimePickerProps
   const [bookedTimes, setBookedTimes] = useState<string[]>([])
   const [blockedDays, setBlockedDays] = useState<Date[]>([])
   const [isLoading, setIsLoading] = useState(false);
+  const t = useTranslations('booking');
 
   useEffect(() => {
     const fetchBlockedDays = async () => {
@@ -117,9 +119,9 @@ export default function DateTimePicker({ onDateTimeChange }: DateTimePickerProps
       />
       {selectedDay && (
         <div className="mt-6">
-          <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Select a time</h3>
+          <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">{t('selectTime')}</h3>
           {isLoading ? (
-            <div className="text-center">Loading times...</div>
+            <div className="text-center">{t('loadingTimes')}</div>
           ) : (
             <div className="grid grid-cols-4 gap-2">
               {timeSlots.map((time) => {

@@ -1,32 +1,35 @@
-
 'use client'
 
 import { useFormState, useFormStatus } from 'react-dom'
-import { login } from '../actions'
+import { login } from '../../../admin/actions'
+import { useTranslations } from 'next-intl'
 
 function SubmitButton() {
   const { pending } = useFormStatus()
+  const t = useTranslations('admin.login')
+
   return (
     <button 
       type="submit" 
       disabled={pending}
       className="w-full px-4 py-2 text-lg font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:bg-gray-500 transition-colors"
     >
-      {pending ? 'Logging In...' : 'Login'}
+      {pending ? t('loggingIn') : t('login')}
     </button>
   )
 }
 
 export default function LoginPage() {
   const [state, formAction] = useFormState(login, undefined)
+  const t = useTranslations('admin.login')
 
   return (
     <main className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
       <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md dark:bg-gray-800">
-        <h1 className="text-3xl font-bold text-center text-gray-900 dark:text-white">Admin Login</h1>
+        <h1 className="text-3xl font-bold text-center text-gray-900 dark:text-white">{t('title')}</h1>
         <form action={formAction} className="space-y-6">
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('password')}</label>
             <input
               id="password"
               name="password"

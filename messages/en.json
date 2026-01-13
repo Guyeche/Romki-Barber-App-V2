@@ -1,0 +1,72 @@
+{
+  "common": {
+    "bookNow": "Book Now",
+    "cancel": "Cancel",
+    "logout": "Logout",
+    "login": "Login",
+    "loading": "Loading...",
+    "confirm": "Confirm",
+    "actions": "Actions",
+    "name": "Name",
+    "email": "Email",
+    "service": "Service",
+    "date": "Date",
+    "time": "Time",
+    "customer": "Customer",
+    "dateTime": "Date & Time"
+  },
+  "home": {
+    "title": "Romki Barber Shop",
+    "description": "Your hair, our passion. Book your appointment now and experience the best haircut of your life.",
+    "bookNow": "Book Now"
+  },
+  "booking": {
+    "title": "Book Your Appointment",
+    "yourName": "Your Name",
+    "yourEmail": "Your Email",
+    "selectService": "Service",
+    "selectTime": "Select a time",
+    "loadingTimes": "Loading times...",
+    "booking": "Booking...",
+    "bookAppointment": "Book Appointment",
+    "bookAnother": "Book Another Appointment",
+    "services": {
+      "haircut": "Haircut",
+      "beardTrim": "Beard Trim",
+      "haircutBeardTrim": "Haircut & Beard Trim"
+    },
+    "success": "Success! Your appointment is confirmed for {{date}} at {{time}}.",
+    "validationFailed": "Validation failed. Please check your input.",
+    "timeSlotBooked": "This time slot is already booked. Please choose another time.",
+    "dayUnavailable": "This day is unavailable for booking. Please choose another date.",
+    "serverError": "An unexpected server error occurred.",
+    "errorOccurred": "An error occurred: {{message}} Please try again.",
+    "serverConfigError": "Server configuration error. Could not send emails.",
+    "criticalError": "A critical server error occurred and we could not fully save your booking. Please contact us directly.",
+    "failedCalendarEvent": "Failed to create calendar event."
+  },
+  "admin": {
+    "dashboard": "Admin Dashboard",
+    "noAppointments": "No appointments scheduled.",
+    "cancelConfirm": "Are you sure you want to cancel this appointment?",
+    "customer": "Customer",
+    "service": "Service",
+    "dateTime": "Date & Time",
+    "actions": "Actions",
+    "cancel": "Cancel",
+    "logout": "Logout",
+    "login": {
+      "title": "Admin Login",
+      "password": "Password",
+      "loggingIn": "Logging In...",
+      "login": "Login"
+    }
+  },
+  "appointments": {
+    "title": "Current Appointments",
+    "cancelConfirm": "Are you sure you want to cancel this appointment?"
+  },
+  "dateTime": {
+    "selectTime": "Select a time"
+  }
+}
