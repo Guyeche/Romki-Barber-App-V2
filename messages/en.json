@@ -43,7 +43,8 @@
     "errorOccurred": "An error occurred: {{message}} Please try again.",
     "serverConfigError": "Server configuration error. Could not send emails.",
     "criticalError": "A critical server error occurred and we could not fully save your booking. Please contact us directly.",
-    "failedCalendarEvent": "Failed to create calendar event."
+    "failedCalendarEvent": "Failed to create calendar event.",
+    "selectDate": "Select a Date"
   },
   "admin": {
     "dashboard": "Admin Dashboard",
@@ -60,6 +61,24 @@
       "password": "Password",
       "loggingIn": "Logging In...",
       "login": "Login"
+    },
+    "schedule": {
+      "title": "Manage Schedule",
+      "day": "Day",
+      "start": "Open",
+      "end": "Close",
+      "active": "Active",
+      "closed": "Closed",
+      "save": "Save Schedule",
+      "saving": "Saving...",
+      "success": "Schedule updated successfully!",
+      "error": "Failed to update schedule.",
+      "bookingWindow": "Booking Window (How far ahead can customers book?)",
+      "week1": "1 Week",
+      "weeks2": "2 Weeks",
+      "weeks3": "3 Weeks",
+      "month1": "1 Month",
+      "months2": "2 Months"
     }
   },
   "appointments": {

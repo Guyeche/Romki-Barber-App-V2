@@ -4,6 +4,7 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import CancelButton from './CancelButton';
 import { getTranslations, getLocale } from 'next-intl/server'
+import { Link } from '../../../lib/routing';
 
 // This tells Next.js not to cache the page, so we always see the latest data.
 export const revalidate = 0;
@@ -40,9 +41,14 @@ export default async function AdminPage() {
       <header className="bg-white dark:bg-gray-800 shadow-md">
         <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
           <h1 className="text-3xl font-bold tracking-tight">{t('dashboard')}</h1>
-          <form action={logout}>
-            <button type="submit" className="px-4 py-2 font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors">{t('logout')}</button>
-          </form>
+          <div className="flex items-center space-x-4 rtl:space-x-reverse">
+            <Link href="/admin/schedule" className="px-4 py-2 font-medium text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
+              {t('schedule.title')}
+            </Link>
+            <form action={logout}>
+              <button type="submit" className="px-4 py-2 font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors">{t('logout')}</button>
+            </form>
+          </div>
         </div>
       </header>
       <main className="max-w-7xl mx-auto py-8 sm:px-6 lg:px-8">
