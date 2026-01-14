@@ -37,8 +37,8 @@ export default async function LocaleLayout({
   const isRTL = locale === 'he';
 
   return (
-    <html lang={locale} dir={isRTL ? 'rtl' : 'ltr'}>
-      <body className={inter.className}>
+    <html lang={locale} dir={isRTL ? 'rtl' : 'ltr'} suppressHydrationWarning>
+      <body className={inter.className} suppressHydrationWarning>
         <div className={isRTL ? 'rtl' : 'ltr'}>
           <NextIntlClientProvider messages={messages}>
             <nav className="fixed top-0 right-0 left-0 z-50 bg-white dark:bg-gray-800 shadow-sm p-4">

@@ -32,8 +32,8 @@
     "bookAnother": "הזמן תור נוסף",
     "services": {
       "haircut": "תספורת",
-      "beardTrim": "תספורת זקן",
-      "haircutBeardTrim": "תספורת ותספורת זקן"
+      "beardTrim": "זקן",
+      "haircutBeardTrim": "תספורת וזקן"
     },
     "success": "הצלחה! התור שלך אושר ל-{{date}} בשעה {{time}}.",
     "validationFailed": "האימות נכשל. אנא בדוק את הקלט שלך.",

@@ -3,6 +3,8 @@
 import { useFormState, useFormStatus } from 'react-dom'
 import { login } from '../../../actions'
 import { useTranslations } from 'next-intl'
+import { useRouter } from '../../../../lib/routing'
+import { useEffect } from 'react'
 
 function SubmitButton() {
   const { pending } = useFormStatus()
@@ -14,7 +16,8 @@ function SubmitButton() {
       disabled={pending}
       className="w-full px-4 py-2 text-lg font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:bg-gray-500 transition-colors"
     >
-      {pending ? t('loggingIn') : t('login')}
+      {/* simplified button text to avoid DOM update conflicts */}
+      <span>{t('login')}</span>
     </button>
   )
 }
@@ -22,6 +25,15 @@ function SubmitButton() {
 export default function LoginPage() {
   const [state, formAction] = useFormState(login, undefined)
   const t = useTranslations('admin.login')
+  const router = useRouter()
+
+  useEffect(() => {
+    console.log('Login Page State:', state);
+    if (state?.success) {
+      console.log('Login successful, redirecting...');
+      router.push('/admin')
+    }
+  }, [state, router])
 
   return (
     <main className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
@@ -39,9 +51,11 @@ export default function LoginPage() {
             />
           </div>
           
-          {state?.message && (
-              <p className="text-sm text-red-500">{state.message}</p>
-          )}
+          <div className="min-h-[24px]">
+            {state?.message && (
+                <p className="text-sm text-red-500">{state.message}</p>
+            )}
+          </div>
 
           <SubmitButton />
         </form>

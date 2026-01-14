@@ -4,7 +4,7 @@ import { z } from 'zod'
 import { supabase } from '../lib/server/supabase'
 import { resend } from '../lib/resend'
 import { getCustomerConfirmationHTML, getAdminNotificationHTML } from '../lib/email/templates';
-import { createCalendarEvent } from '../lib/google/calendar';
+import { createCalendarEvent, deleteCalendarEvent } from '../lib/google/calendar';
 import { getLocale } from 'next-intl/server';
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
@@ -14,6 +14,7 @@ import { revalidatePath } from 'next/cache'
 
 interface AppointmentFormState {
   message: string;
+  success?: boolean;
   errors?: {
     name?: string[];
     email?: string[];
@@ -41,21 +42,19 @@ const formatIsraeliDate = (dateString: string) => {
 
 // 1. LOGIN ACTION
 export async function login(prevState: any, formData: FormData) {
-  const email = formData.get('email') as string
-  const password = formData.get('password') as string
+  const password = (formData.get('password') as string || '');
 
   // LOAD CREDENTIALS FROM .ENV
-  const adminEmail = process.env.BARBER_ADMIN_EMAIL;
   const adminPassword = process.env.ADMIN_PASSWORD;
 
   // Basic check to ensure env vars are set
-  if (!adminEmail || !adminPassword) {
-    console.error('Missing Admin Credentials in .env file');
+  if (!adminPassword) {
+    console.error('Missing Admin Password in .env file');
     return { message: 'Server configuration error' };
   }
 
   // Compare input against .env values
-  if (email === adminEmail && password === adminPassword) {
+  if (password === adminPassword) {
     
     // Set a cookie to remember the user is logged in
     (await cookies()).set('admin_session', 'true', { 
@@ -63,16 +62,17 @@ export async function login(prevState: any, formData: FormData) {
       path: '/' 
     })
     
-    redirect('/admin')
+    return { success: true, message: 'Success' }
   } else {
-    return { message: 'Invalid email or password' }
+    return { message: 'Invalid password' }
   }
 }
 
 // 2. LOGOUT ACTION
 export async function logout() {
+  const locale = await getLocale();
   (await cookies()).delete('admin_session')
-  redirect('/admin/login')
+  redirect(`/${locale}/admin/login`)
 }
 
 // 3. CANCEL APPOINTMENT ACTION (Updated with Email Notification)
@@ -86,7 +86,7 @@ export async function cancelAppointment(formData: FormData) {
   // A. FETCH the appointment details first (so we have the email)
   const { data: appointment, error: fetchError } = await supabase
     .from('appointments')
-    .select('customer_name, email, date, time') 
+    .select('customer_name, email, date, time, event_id') 
     .eq('id', id)
     .single();
 
@@ -106,7 +106,12 @@ export async function cancelAppointment(formData: FormData) {
     return
   }
 
-  // C. SEND CANCELLATION EMAIL
+  // C. DELETE FROM GOOGLE CALENDAR
+  if (appointment.event_id) {
+    await deleteCalendarEvent(appointment.event_id);
+  }
+
+  // D. SEND CANCELLATION EMAIL
   const fromEmail = process.env.RESEND_FROM_EMAIL;
   if (fromEmail) {
       try {

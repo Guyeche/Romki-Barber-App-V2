@@ -25,11 +25,11 @@ async function getAppointments() {
 
 export default async function AdminPage() {
   const cookieStore = cookies()
-  const session = cookieStore.get('session')
+  const session = cookieStore.get('admin_session')
   const locale = await getLocale()
   const t = await getTranslations('admin')
 
-  if (!session || session.value !== 'admin') {
+  if (!session || session.value !== 'true') {
     redirect(`/${locale}/admin/login`)
   }
 
@@ -59,7 +59,7 @@ export default async function AdminPage() {
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+              <tbody className="divide-y divide-gray-200 dark:divide-gray-700" suppressHydrationWarning>
                 {appointments.length === 0 ? (
                     <tr>
                         <td colSpan={4} className="px-6 py-12 text-center text-gray-500 dark:text-gray-400">
@@ -75,11 +75,13 @@ export default async function AdminPage() {
                       <div className="text-sm">{appointment.service}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-semibold">{new Date(appointment.date).toLocaleDateString(locale === 'he' ? 'he-IL' : 'en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</div>
+                        <div className="text-sm font-semibold" suppressHydrationWarning>{new Date(appointment.date).toLocaleDateString(locale === 'he' ? 'he-IL' : 'en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</div>
                         <div className="text-sm text-gray-500 dark:text-gray-400">{appointment.time}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <CancelButton id={appointment.id} />
+                      <div>
+                        <CancelButton id={appointment.id} />
+                      </div>
                     </td>
                   </tr>
                 ))}
