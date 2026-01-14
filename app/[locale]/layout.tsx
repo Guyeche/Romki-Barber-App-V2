@@ -2,16 +2,16 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '../../lib/routing'; // <--- UPDATED IMPORT
-import { Inter } from "next/font/google";
+import { Rubik } from "next/font/google";
 import "../globals.css"; // Ensure this path is correct based on your folder structure
 import LanguageSwitcher from '../../components/LanguageSwitcher'; // Verify this path too
 import type { Metadata } from "next";
 
-const inter = Inter({ subsets: ["latin"] });
+const rubik = Rubik({ subsets: ["latin", "hebrew"] });
 
 export const metadata: Metadata = {
-  title: "Romki Barber Shop",
-  description: "Book your appointment at Romki Barber Shop",
+  title: "BarberLaki",
+  description: "Book your appointment at BarberLaki",
 };
 
 export function generateStaticParams() {
@@ -38,7 +38,7 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} dir={isRTL ? 'rtl' : 'ltr'} suppressHydrationWarning>
-      <body className={inter.className} suppressHydrationWarning>
+      <body className={rubik.className} suppressHydrationWarning>
         <div className={isRTL ? 'rtl' : 'ltr'}>
           <NextIntlClientProvider messages={messages}>
             <nav className="fixed top-0 right-0 left-0 z-50 bg-white dark:bg-gray-800 shadow-sm p-4">
