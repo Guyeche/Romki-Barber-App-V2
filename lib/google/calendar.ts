@@ -23,7 +23,8 @@ export async function createCalendarEvent(appointment: Appointment) {
   }
 
   // 2. Format the Private Key correctly (Fixes "Invalid JWT Signature")
-  const formattedKey = privateKey.replace(/\\n/g, '\n');
+  // Handle both literal "\n" strings and actual newlines
+  const formattedKey = privateKey.replace(/\\n/g, '\n').replace(/"/g, ''); 
 
   // 3. Authenticate using GoogleAuth (Fixes "Expected 0-1 arguments" error)
   const auth = new google.auth.GoogleAuth({

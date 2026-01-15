@@ -2,6 +2,8 @@
 
 body {
   @apply bg-gradient-to-br from-slate-50 to-slate-200 dark:from-slate-900 dark:to-slate-950 min-h-screen text-slate-900 dark:text-slate-100 antialiased bg-no-repeat bg-center bg-cover bg-fixed;
+  /* Improve background positioning to focus on top-center (faces) rather than dead center */
+  background-position: top center; 
 }
 
 /* RTL Support */
