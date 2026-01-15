@@ -44,7 +44,8 @@
     "serverConfigError": "Server configuration error. Could not send emails.",
     "criticalError": "A critical server error occurred and we could not fully save your booking. Please contact us directly.",
     "failedCalendarEvent": "Failed to create calendar event.",
-    "selectDate": "Select a Date"
+    "selectDate": "Select a Date",
+    "changeDate": "Change Date"
   },
   "admin": {
     "dashboard": "Admin Dashboard",

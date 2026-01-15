@@ -151,6 +151,27 @@ export default function DateTimePicker({ onDateTimeChange }: DateTimePickerProps
         }
       }
     }
+
+    // Filter out past times if the selected day is today
+    if (selectedDay) {
+        const now = new Date();
+        if (
+            selectedDay.getDate() === now.getDate() &&
+            selectedDay.getMonth() === now.getMonth() &&
+            selectedDay.getFullYear() === now.getFullYear()
+        ) {
+            const currentHour = now.getHours();
+            const currentMinute = now.getMinutes();
+
+            return slots.filter(time => {
+                const [slotHour, slotMinute] = time.split(':').map(Number);
+                if (slotHour < currentHour) return false;
+                if (slotHour === currentHour && slotMinute <= currentMinute) return false;
+                return true;
+            });
+        }
+    }
+
     return slots
   }
 
@@ -194,7 +215,7 @@ export default function DateTimePicker({ onDateTimeChange }: DateTimePickerProps
                 onClick={() => setSelectedDay(undefined)} 
                 className="text-sm font-medium text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
               >
-                 Change Date
+                 {t('changeDate')}
               </button>
            </div>
            
