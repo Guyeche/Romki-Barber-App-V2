@@ -107,7 +107,8 @@ export async function deleteCalendarEvent(eventId: string) {
     return;
   }
 
-  const formattedKey = privateKey.replace(/\\n/g, '\n');
+  // Consistent key formatting with createCalendarEvent
+  const formattedKey = privateKey.replace(/\\n/g, '\n').replace(/"/g, '');
 
   // Authenticate using GoogleAuth
   const auth = new google.auth.GoogleAuth({
