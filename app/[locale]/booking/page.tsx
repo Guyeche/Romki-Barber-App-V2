@@ -3,7 +3,7 @@
 import { useFormState, useFormStatus } from 'react-dom'
 import { bookAppointment } from '../../actions'
 import DateTimePicker from '../../../components/DateTimePicker'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
 import { Link } from '@/lib/navigation'
 
@@ -25,10 +25,37 @@ function SubmitButton() {
 export default function BookingPage() {
   const [state, formAction] = useFormState(bookAppointment, initialState)
   const [dateTime, setDateTime] = useState<{ date?: Date; time?: string }>({ date: undefined, time: undefined });
+  const [formData, setFormData] = useState({ name: '', email: '' });
   const t = useTranslations('booking')
+
+  useEffect(() => {
+    const savedName = localStorage.getItem('barber_app_name');
+    const savedEmail = localStorage.getItem('barber_app_email');
+    if (savedName || savedEmail) {
+      setFormData({
+        name: savedName || '',
+        email: savedEmail || ''
+      });
+    }
+  }, []);
+
+  const handleSubmit = (payload: FormData) => {
+    const name = payload.get('name') as string;
+    const email = payload.get('email') as string;
+    
+    if (name) localStorage.setItem('barber_app_name', name);
+    if (email) localStorage.setItem('barber_app_email', email);
+    
+    formAction(payload);
+  };
 
   const handleDateTimeChange = (date: Date, time: string) => {
     setDateTime({ date, time });
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   return (
@@ -37,14 +64,30 @@ export default function BookingPage() {
         <h1 className="text-4xl font-bold text-center text-gray-800 dark:text-white">{t('title')}</h1>
         
         {!state.message ? (
-          <form action={formAction} className="mt-8 space-y-6">
+          <form action={handleSubmit} className="mt-8 space-y-6">
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('yourName')}</label>
-              <input type="text" name="name" id="name" required className="block w-full px-3 py-2 mt-1 text-gray-900 bg-gray-200 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" />
+              <input 
+                type="text" 
+                name="name" 
+                id="name" 
+                required 
+                value={formData.name}
+                onChange={handleInputChange}
+                className="block w-full px-3 py-2 mt-1 text-gray-900 bg-gray-200 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" 
+              />
             </div>
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('yourEmail')}</label>
-              <input type="email" name="email" id="email" required className="block w-full px-3 py-2 mt-1 text-gray-900 bg-gray-200 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" />
+              <input 
+                type="email" 
+                name="email" 
+                id="email" 
+                required 
+                value={formData.email}
+                onChange={handleInputChange}
+                className="block w-full px-3 py-2 mt-1 text-gray-900 bg-gray-200 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" 
+              />
             </div>
             <div>
               <label htmlFor="service" className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('selectService')}</label>
