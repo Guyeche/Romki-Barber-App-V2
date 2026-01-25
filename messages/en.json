@@ -22,7 +22,7 @@
   },
   "booking": {
     "title": "Book Your Appointment",
-    "yourName": "Your Name",
+    "yourName": "Full Name",
     "yourEmail": "Your Email",
     "selectService": "Service",
     "selectTime": "Select a time",

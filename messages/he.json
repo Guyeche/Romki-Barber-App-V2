@@ -22,7 +22,7 @@
   },
   "booking": {
     "title": "הזמן תור",
-    "yourName": "השם שלך",
+    "yourName": "שם מלא",
     "yourEmail": "האימייל שלך",
     "selectService": "שירות",
     "selectTime": "בחר שעה",
