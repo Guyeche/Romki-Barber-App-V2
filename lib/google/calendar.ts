@@ -40,27 +40,40 @@ export async function createCalendarEvent(appointment: Appointment) {
   // 4. Calculate Time
   const [year, month, day] = appointment.date.split('-').map(Number);
   const [hours, minutes] = appointment.time.split(':').map(Number);
-  const startTime = new Date(year, month - 1, day, hours, minutes);
+  
+  // Create Date objects in UTC to preserve the "face value" of the time (e.g., 15:00)
+  // regardless of the server's local timezone.
+  const startTime = new Date(Date.UTC(year, month - 1, day, hours, minutes));
 
   const durationMap: { [key: string]: number } = {
       'Haircut': 20,
       'Beard Trim': 10,
       'Haircut & Beard Trim': 30,
+      'תספורת': 20,
+      'זקן': 10,
+      'תספורת וזקן': 30
   };
   const duration = durationMap[appointment.service] || 30; // Default to 30 mins
 
   const endTime = new Date(startTime.getTime() + duration * 60000);
+
+  // Helper to get ISO string without 'Z' (Zulu/UTC suffix)
+  // This allows us to pass the "face value" time to Google Calendar
+  // and let it apply the 'Asia/Jerusalem' timezone.
+  const toIsoStringNoZ = (date: Date) => {
+    return date.toISOString().replace('Z', '');
+  };
 
   // 5. Create Event Object
   const event = {
     summary: `Appointment: ${appointment.customer_name} - ${appointment.service}`,
     description: `Customer: ${appointment.customer_name}\nEmail: ${appointment.email}\nService: ${appointment.service}`,
     start: {
-        dateTime: startTime.toISOString(),
+        dateTime: toIsoStringNoZ(startTime),
         timeZone: 'Asia/Jerusalem',
     },
     end: {
-        dateTime: endTime.toISOString(),
+        dateTime: toIsoStringNoZ(endTime),
         timeZone: 'Asia/Jerusalem',
     },
   };
