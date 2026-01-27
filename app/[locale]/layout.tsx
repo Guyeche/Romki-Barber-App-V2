@@ -6,6 +6,7 @@ import { Rubik } from "next/font/google";
 import "../globals.css"; 
 import LanguageSwitcher from '../../components/LanguageSwitcher'; 
 import BackgroundController from '../../components/BackgroundController';
+import CancelBookingModal from '../../components/CancelBookingModal';
 import type { Metadata } from "next";
 
 const rubik = Rubik({ subsets: ["latin", "hebrew"] });
@@ -44,7 +45,8 @@ export default async function LocaleLayout({
           <NextIntlClientProvider messages={messages}>
             <BackgroundController />
             <nav className="fixed top-0 right-0 left-0 z-50 bg-white dark:bg-gray-800 shadow-sm p-4">
-              <div className="max-w-7xl mx-auto flex justify-end">
+              <div className="max-w-7xl mx-auto flex justify-between items-center">
+                <CancelBookingModal />
                 <LanguageSwitcher />
               </div>
             </nav>

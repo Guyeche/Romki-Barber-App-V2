@@ -47,13 +47,13 @@ export async function createCalendarEvent(appointment: Appointment) {
 
   const durationMap: { [key: string]: number } = {
       'Haircut': 20,
-      'Beard Trim': 10,
-      'Haircut & Beard Trim': 30,
+      'Beard Trim': 20,
+      'Haircut & Beard Trim': 20,
       'תספורת': 20,
-      'זקן': 10,
-      'תספורת וזקן': 30
+      'זקן': 20,
+      'תספורת וזקן': 20
   };
-  const duration = durationMap[appointment.service] || 30; // Default to 30 mins
+  const duration = durationMap[appointment.service] || 20; // Default to 20 mins
 
   const endTime = new Date(startTime.getTime() + duration * 60000);
 

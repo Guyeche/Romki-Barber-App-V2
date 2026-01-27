@@ -147,7 +147,8 @@ export default function DateTimePicker({ onDateTimeChange }: DateTimePickerProps
 
         for (let hour = startHour; hour < endHour; hour++) {
           slots.push(`${hour.toString().padStart(2, '0')}:00`)
-          slots.push(`${hour.toString().padStart(2, '0')}:30`)
+          slots.push(`${hour.toString().padStart(2, '0')}:20`)
+          slots.push(`${hour.toString().padStart(2, '0')}:40`)
         }
       }
     }

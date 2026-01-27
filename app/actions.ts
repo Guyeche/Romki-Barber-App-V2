@@ -9,6 +9,7 @@ import { getLocale } from 'next-intl/server';
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
+import { formatIsraeliDate } from '../lib/date-utils'
 
 // --- INTERFACES & SCHEMAS ---
 
@@ -32,13 +33,8 @@ const schema = z.object({
   time: z.string().min(1, { message: 'Time is required' }),
 })
 
-// Helper to format date to DD/MM/YYYY
-const formatIsraeliDate = (dateString: string) => {
-  const [year, month, day] = dateString.split('-');
-  return `${day}/${month}/${year}`;
-};
-
 // --- ADMIN ACTIONS (Login, Logout, Cancel) ---
+import { processCancellation } from '../lib/appointments'
 
 // 1. LOGIN ACTION
 export async function login(prevState: any, formData: FormData) {
@@ -75,66 +71,13 @@ export async function logout() {
   redirect(`/${locale}/admin/login`)
 }
 
-// 3. CANCEL APPOINTMENT ACTION (Updated with Email Notification)
+// 3. CANCEL APPOINTMENT ACTION
 export async function cancelAppointment(formData: FormData) {
-  const id = formData.get('id')
-  
+  const id = formData.get('id') as string
   if (!id) return
 
-  console.log(`Canceling appointment with ID: ${id}`)
-
-  // A. FETCH the appointment details first (so we have the email)
-  const { data: appointment, error: fetchError } = await supabase
-    .from('appointments')
-    .select('customer_name, email, date, time, event_id') 
-    .eq('id', id)
-    .single();
-
-  if (fetchError || !appointment) {
-     console.error("Could not find appointment to cancel:", fetchError);
-     return;
-  }
-
-  // B. DELETE from Supabase
-  const { error: deleteError } = await supabase
-    .from('appointments')
-    .delete()
-    .eq('id', id)
-
-  if (deleteError) {
-    console.error('Error deleting appointment:', deleteError)
-    return
-  }
-
-  // C. DELETE FROM GOOGLE CALENDAR
-  if (appointment.event_id) {
-    await deleteCalendarEvent(appointment.event_id);
-  }
-
-  // D. SEND CANCELLATION EMAIL
-  const fromEmail = process.env.RESEND_FROM_EMAIL;
-  if (fromEmail) {
-      try {
-        await resend.emails.send({
-          from: fromEmail,
-          to: appointment.email,
-          subject: 'Appointment Cancelled',
-          // Simple HTML message. You can make this fancier later if you want.
-          html: `
-            <div style="font-family: sans-serif; padding: 20px;">
-              <h2>Appointment Cancelled</h2>
-              <p>Hi ${appointment.customer_name},</p>
-              <p>Your appointment on <strong>${formatIsraeliDate(appointment.date)}</strong> at <strong>${appointment.time}</strong> has been cancelled.</p>
-              <p>If you have any questions, please contact us.</p>
-            </div>
-          `,
-        });
-        console.log("Cancellation email sent to:", appointment.email);
-      } catch (emailError) {
-        console.error("Failed to send cancellation email:", emailError);
-      }
-  }
-
+  await processCancellation(id)
+  
   // Refresh the admin page data
   revalidatePath('/admin')
 }

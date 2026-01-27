@@ -88,5 +88,15 @@
   },
   "dateTime": {
     "selectTime": "Select a time"
+  },
+  "cancellation": {
+    "myBookings": "My Bookings",
+    "title": "Manage Your Bookings",
+    "description": "Enter your details to view and cancel your upcoming appointments.",
+    "findBookings": "Find Bookings",
+    "noBookings": "No upcoming appointments found for these details.",
+    "cancelSuccess": "Appointment cancelled successfully.",
+    "cancelError": "Failed to cancel appointment.",
+    "confirmCancel": "Are you sure you want to cancel this appointment?"
   }
 }

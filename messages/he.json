@@ -88,5 +88,15 @@
   },
   "dateTime": {
     "selectTime": "בחר שעה"
+  },
+  "cancellation": {
+    "myBookings": "התורים שלי",
+    "title": "ניהול תורים",
+    "description": "הזן את פרטיך כדי לצפות ולבטל תורים עתידיים.",
+    "findBookings": "מצא תורים",
+    "noBookings": "לא נמצאו תורים עתידיים לפרטים אלו.",
+    "cancelSuccess": "התור בוטל בהצלחה.",
+    "cancelError": "ביטול התור נכשל.",
+    "confirmCancel": "האם אתה בטוח שברצונך לבטל את התור?"
   }
 }
