@@ -142,13 +142,27 @@ export default function DateTimePicker({ onDateTimeChange }: DateTimePickerProps
       const dayConfig = schedule.find(s => s.day_of_week === selectedDay.getDay());
       
       if (dayConfig && dayConfig.is_active) {
-        const startHour = parseInt(dayConfig.start_time.split(':')[0], 10);
-        const endHour = parseInt(dayConfig.end_time.split(':')[0], 10);
+        const [startH, startM] = dayConfig.start_time.split(':').map(Number);
+        const [endH, endM] = dayConfig.end_time.split(':').map(Number);
+        
+        let currentH = startH;
+        let currentM = startM;
+        const endTotalMinutes = endH * 60 + endM;
 
-        for (let hour = startHour; hour < endHour; hour++) {
-          slots.push(`${hour.toString().padStart(2, '0')}:00`)
-          slots.push(`${hour.toString().padStart(2, '0')}:20`)
-          slots.push(`${hour.toString().padStart(2, '0')}:40`)
+        while (true) {
+            const currentTotalMinutes = currentH * 60 + currentM;
+            // If the slot ends after the closing time, stop.
+            if (currentTotalMinutes + 20 > endTotalMinutes) break;
+            
+            slots.push(`${currentH.toString().padStart(2, '0')}:${currentM.toString().padStart(2, '0')}`);
+            
+            currentM += 20;
+            if (currentM >= 60) {
+                currentH++;
+                currentM -= 60;
+            }
+            // Safety break for infinite loop (shouldn't happen but good practice)
+            if (currentH >= 24 && currentM > 0) break;
         }
       }
     }

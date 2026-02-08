@@ -39,7 +39,8 @@ export default function ScheduleForm({ initialSchedule, initialBookingWindow }: 
       for (let i = 0; i < 24; i++) {
           const hour = i.toString().padStart(2, '0');
           options.push(`${hour}:00`);
-          options.push(`${hour}:30`);
+          options.push(`${hour}:20`);
+          options.push(`${hour}:40`);
       }
       return options;
   };
