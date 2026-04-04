@@ -8,13 +8,13 @@ export default function LanguageSwitcher() {
   const currentLocale = useLocale();
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-1 bg-stone-900/80 p-1 rounded-lg border border-stone-800 shadow-inner backdrop-blur-sm">
       <button
         onClick={() => switchLanguage('en')}
-        className={`px-3 py-1 text-sm font-medium rounded-md transition-colors ${
+        className={`rounded-md px-3 py-1 text-xs font-bold transition-all ${
           currentLocale === 'en'
-            ? 'bg-blue-600 text-white'
-            : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
+            ? 'bg-[#ecb613] text-black shadow-sm'
+            : 'text-stone-400 hover:text-stone-100 hover:bg-stone-800/50'
         }`}
         aria-label="Switch to English"
       >
@@ -22,10 +22,10 @@ export default function LanguageSwitcher() {
       </button>
       <button
         onClick={() => switchLanguage('he')}
-        className={`px-3 py-1 text-sm font-medium rounded-md transition-colors ${
+        className={`rounded-md px-3 py-1 text-xs font-bold transition-all ${
           currentLocale === 'he'
-            ? 'bg-blue-600 text-white'
-            : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
+            ? 'bg-[#ecb613] text-black shadow-sm'
+            : 'text-stone-400 hover:text-stone-100 hover:bg-stone-800/50'
         }`}
         aria-label="Switch to Hebrew"
       >

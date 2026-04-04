@@ -16,7 +16,7 @@ function SubmitButton() {
   const t = useTranslations('booking')
 
   return (
-    <button type="submit" aria-disabled={pending} className="px-6 py-3 text-lg font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700">
+    <button type="submit" aria-disabled={pending} className="px-8 py-4 text-lg font-bold text-black bg-[#ecb613] rounded-xl shadow-[0_0_15px_rgba(236,182,19,0.3)] hover:bg-[#dca912] hover:shadow-[0_0_25px_rgba(236,182,19,0.5)] transition-all w-full mt-4">
       {pending ? t('booking') : t('bookAppointment')}
     </button>
   )
@@ -59,14 +59,26 @@ export default function BookingPage() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4">
-      <div className="max-w-md w-full p-8 bg-white/90 backdrop-blur-sm rounded-lg shadow-xl dark:bg-gray-900/90 border border-gray-200 dark:border-gray-700">
-        <h1 className="text-4xl font-bold text-center text-gray-800 dark:text-white">{t('title')}</h1>
+    <div className="relative flex flex-col items-center justify-center min-h-screen p-4 pt-24 pb-12 font-body">
+      {/* Shared Premium Background */}
+      <div className="fixed inset-0 z-0">
+        <img
+          src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?q=80&w=2674&auto=format&fit=crop"
+          alt="Background"
+          className="h-full w-full object-cover opacity-40"
+        />
+        <div className="absolute inset-0 bg-black/80 backdrop-blur-md" />
+      </div>
+
+      <div className="max-w-xl w-full p-8 md:p-10 bg-black/50 backdrop-blur-2xl shadow-2xl rounded-3xl border border-stone-800 relative z-10">
+        <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#ecb613] to-[#fde047] rounded-t-3xl"></div>
+        <h1 className="text-3xl md:text-5xl font-heading font-bold text-center text-white mt-2 drop-shadow-md">{t('title')}</h1>
+        <p className="mt-4 text-center text-stone-300">{t('description')}</p>
         
         {!state.message ? (
           <form action={handleSubmit} className="mt-8 space-y-6">
-            <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('yourName')}</label>
+            <div className="space-y-1.5">
+              <label htmlFor="name" className="block text-sm font-medium text-stone-300">{t('yourName')}</label>
               <input 
                 type="text" 
                 name="name" 
@@ -74,11 +86,11 @@ export default function BookingPage() {
                 required 
                 value={formData.name}
                 onChange={handleInputChange}
-                className="block w-full px-3 py-2 mt-1 text-gray-900 bg-gray-200 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" 
+                className="block w-full px-4 py-3.5 text-stone-100 bg-[#111111]/80 border border-stone-800 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-[#ecb613] focus:border-transparent transition-all placeholder-stone-600 backdrop-blur-sm" 
               />
             </div>
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('yourEmail')}</label>
+            <div className="space-y-1.5">
+              <label htmlFor="email" className="block text-sm font-medium text-stone-300">{t('yourEmail')}</label>
               <input 
                 type="email" 
                 name="email" 
@@ -86,30 +98,30 @@ export default function BookingPage() {
                 required 
                 value={formData.email}
                 onChange={handleInputChange}
-                className="block w-full px-3 py-2 mt-1 text-gray-900 bg-gray-200 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" 
+                className="block w-full px-4 py-3.5 text-stone-100 bg-[#111111]/80 border border-stone-800 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-[#ecb613] focus:border-transparent transition-all placeholder-stone-600 backdrop-blur-sm" 
               />
             </div>
-            <div>
-              <label htmlFor="service" className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('selectService')}</label>
-              <select id="service" name="service" required className="block w-full px-3 py-2 mt-1 text-gray-900 bg-gray-200 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                <option>{t('services.haircutBeardTrim')}</option>
-                <option>{t('services.haircut')}</option>
-                <option>{t('services.beardTrim')}</option>
+            <div className="space-y-1.5">
+              <label htmlFor="service" className="block text-sm font-medium text-stone-300">{t('selectService')}</label>
+              <select id="service" name="service" required className="block w-full px-4 py-3.5 text-stone-100 bg-[#111111]/80 border border-stone-800 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-[#ecb613] focus:border-transparent transition-all backdrop-blur-sm appearance-none">
+                <option value={t('services.haircutBeardTrim')} className="bg-stone-900">{t('services.haircutBeardTrim')}</option>
+                <option value={t('services.haircut')} className="bg-stone-900">{t('services.haircut')}</option>
+                <option value={t('services.beardTrim')} className="bg-stone-900">{t('services.beardTrim')}</option>
               </select>
             </div>
-            <div>
+            <div className="pt-2">
               <DateTimePicker onDateTimeChange={handleDateTimeChange} />
               <input type="hidden" name="date" value={dateTime.date ? `${dateTime.date.getFullYear()}-${String(dateTime.date.getMonth() + 1).padStart(2, '0')}-${String(dateTime.date.getDate()).padStart(2, '0')}` : ''} />
               <input type="hidden" name="time" value={dateTime.time || ''} />
             </div>
-            <div className="text-center">
+            <div className="text-center pt-2">
               <SubmitButton />
             </div>
           </form>
         ) : (
-          <div className="mt-8 text-center">
-            <p className="text-green-500 text-lg">{state.message}</p>
-            <Link href="/" className="mt-6 inline-block px-8 py-3 text-lg font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700">
+          <div className="mt-8 text-center bg-green-950/40 p-8 rounded-2xl border border-green-900/50 shadow-inner backdrop-blur-sm">
+            <p className="text-green-400 text-xl font-bold drop-shadow-sm mb-6">{state.message}</p>
+            <Link href="/" className="inline-block px-10 py-4 text-base font-bold text-black bg-[#ecb613] rounded-xl shadow-[0_0_15px_rgba(236,182,19,0.3)] hover:bg-[#dca912] w-full sm:w-auto transition-all">
               {t('bookAnother')}
             </Link>
           </div>

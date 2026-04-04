@@ -195,10 +195,10 @@ export default function DateTimePicker({ onDateTimeChange }: DateTimePickerProps
   return (
     <div>
       {!selectedDay ? (
-        <div className="mt-6">
-           <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">{t('selectDate')}</h3>
+        <div className="mt-4">
+           <h3 className="text-lg font-medium text-stone-200 mb-4">{t('selectDate')}</h3>
            {availableDates.length === 0 ? (
-               <p className="text-gray-500 text-center py-8">No dates available for booking.</p>
+               <p className="text-stone-500 text-center py-8">No dates available for booking.</p>
            ) : (
                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                   {availableDates.map(date => (
@@ -206,12 +206,12 @@ export default function DateTimePicker({ onDateTimeChange }: DateTimePickerProps
                          key={date.toISOString()}
                          type="button"
                          onClick={() => handleDayClick(date)}
-                         className="flex flex-col items-center justify-center p-4 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-blue-50 dark:hover:bg-gray-700 hover:border-blue-300 dark:hover:border-blue-500 transition-all shadow-sm hover:shadow-md"
+                         className="flex flex-col items-center justify-center p-4 rounded-xl border border-stone-800 bg-[#111111]/80 hover:bg-[#1a1a1a] hover:border-[#ecb613]/50 transition-all shadow-sm focus:outline-none backdrop-blur-sm"
                       >
-                         <span className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                         <span className="text-sm font-medium text-stone-400 uppercase tracking-wider">
                             {format(date, 'EEEE', { locale: dateFnsLocale })}
                          </span>
-                         <span className="text-xl font-bold text-gray-900 dark:text-white mt-1">
+                         <span className="text-xl font-bold text-stone-100 mt-1">
                             {format(date, 'd MMM', { locale: dateFnsLocale })}
                          </span>
                       </button>
@@ -220,23 +220,23 @@ export default function DateTimePicker({ onDateTimeChange }: DateTimePickerProps
            )}
         </div>
       ) : (
-        <div className="mt-6">
-           <div className="flex items-center justify-between mb-6">
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+        <div className="mt-4">
+           <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-bold text-[#ecb613]">
                  {format(selectedDay, 'EEEE, d MMMM', { locale: dateFnsLocale })}
               </h3>
               <button 
                 type="button"
                 onClick={() => setSelectedDay(undefined)} 
-                className="text-sm font-medium text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
+                className="text-sm font-medium text-stone-400 hover:text-stone-200 transition-colors underline underline-offset-4"
               >
                  {t('changeDate')}
               </button>
            </div>
            
-           <h4 className="text-md font-medium text-gray-700 dark:text-gray-300 mb-3">{t('selectTime')}</h4>
+           <h4 className="text-sm font-medium text-stone-300 mb-3">{t('selectTime')}</h4>
            {isLoading ? (
-            <div className="text-center py-8">{t('loadingTimes')}</div>
+            <div className="text-center py-8 text-stone-400">{t('loadingTimes')}</div>
           ) : (
             <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
               {timeSlots.map((time) => {
@@ -247,13 +247,13 @@ export default function DateTimePicker({ onDateTimeChange }: DateTimePickerProps
                     type="button"
                     onClick={() => handleTimeClick(time)}
                     disabled={isBooked}
-                    className={`px-3 py-3 text-sm font-semibold rounded-lg transition-all shadow-sm
+                    className={`px-3 py-3 text-sm font-semibold rounded-xl transition-all shadow-sm backdrop-blur-sm focus:outline-none
                       ${
                         isBooked
-                          ? 'bg-gray-100 text-gray-400 cursor-not-allowed dark:bg-gray-800 dark:text-gray-600 border border-transparent'
+                          ? 'bg-stone-900/50 text-stone-600 cursor-not-allowed border border-stone-800/50'
                           : selectedTime === time
-                            ? 'bg-blue-600 text-white shadow-md ring-2 ring-blue-400 transform scale-105'
-                            : 'bg-white text-gray-800 border border-gray-200 hover:border-blue-400 hover:bg-blue-50 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-200 dark:hover:bg-gray-700'
+                            ? 'bg-[#ecb613] text-black shadow-[0_0_15px_rgba(236,182,19,0.3)] border-transparent transform scale-105'
+                            : 'bg-[#111111]/80 text-stone-200 border border-stone-800 hover:border-[#ecb613]/50 hover:bg-[#1a1a1a]'
                       }`
                     }
                   >

@@ -22,6 +22,7 @@
   },
   "booking": {
     "title": "Book Your Appointment",
+    "description": "Enter your details to schedule your next premium grooming session.",
     "yourName": "Full Name",
     "yourEmail": "Your Email",
     "selectService": "Service",
@@ -106,5 +107,52 @@
     "cancelSuccess": "Appointment cancelled successfully.",
     "cancelError": "Failed to cancel appointment.",
     "confirmCancel": "Are you sure you want to cancel this appointment?"
+  },
+  "landing": {
+    "heroSubtitle": "Premium Grooming",
+    "heroTitle1": "Your hair, ",
+    "heroTitle2": "our passion.",
+    "heroDesc": "Book your appointment now and experience the best haircut of your life.",
+    "ourServices": "Our Services",
+    "scroll": "Scroll",
+    "servicesSub": "What We Offer",
+    "servicesTitle": "Our Services",
+    "services": {
+      "haircut": {
+        "title": "Haircut",
+        "desc": "Precision cutting tailored to your face shape and personal style. Includes wash and styling.",
+        "price": "₪50"
+      },
+      "beard": {
+        "title": "Beard Trim",
+        "desc": "Expert beard shaping and grooming with premium oils for a refined finish.",
+        "price": "₪20"
+      },
+      "shave": {
+        "title": "Hot Towel Shave",
+        "desc": "A luxurious traditional straight-razor shave with hot towel treatment.",
+        "price": "₪90"
+      }
+    },
+    "aboutSub": "Meet the Barber",
+    "aboutTitle1": "Craftsmanship ",
+    "aboutTitle2": "& Precision",
+    "aboutDesc1": "With over 15 years of experience in the art of barbering, our master barber brings unparalleled expertise to every cut. Trained in both classic and contemporary techniques.",
+    "aboutDesc2": "At BarberLaki, we believe that a great haircut is more than just a service \u2014 it's an experience.",
+    "stats": {
+      "years": "Years",
+      "clients": "Clients",
+      "rating": "Rating"
+    },
+    "footer": {
+      "desc": "Your hair, our passion. Premium grooming for the modern gentleman.",
+      "hours": "Opening Hours",
+      "hours1": "Sun \u2013 Thu: 9:00 \u2013 20:00",
+      "hours2": "Friday: 9:00 \u2013 14:00",
+      "hours3": "Saturday: Closed",
+      "location": "Location",
+      "address": "Tel Aviv, Israel",
+      "copyright": "\u00a9 2026 BarberLaki. All rights reserved."
+    }
   }
 }
