@@ -41,9 +41,6 @@ export default async function Home() {
 
         <div className="relative z-10 mx-auto w-full max-w-6xl px-6 pt-16">
           <div className="max-w-3xl ltr:pr-8 rtl:pl-8">
-            <div className="mb-6 inline-block rounded-full border border-stone-700 bg-black/50 px-4 py-1.5 backdrop-blur-md shadow-lg">
-              <span className="text-xs font-medium uppercase tracking-[0.2em] text-stone-300 drop-shadow-md">{t('heroSubtitle')}</span>
-            </div>
             <h1 className="font-heading text-4xl font-bold leading-tight text-white md:text-6xl lg:text-7xl drop-shadow-xl w-full">
               {t('heroTitle1')}
               <span className="text-gradient-gold block md:inline md:mr-3 ltr:md:ml-3 rtl:md:mr-3"> {t('heroTitle2')}</span>
