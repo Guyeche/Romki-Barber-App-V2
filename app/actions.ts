@@ -55,7 +55,10 @@ export async function login(prevState: any, formData: FormData) {
     // Set a cookie to remember the user is logged in
     (await cookies()).set('admin_session', 'true', { 
       httpOnly: true, 
-      path: '/' 
+      path: '/',
+      maxAge: 60 * 60 * 24 * 365, // 1 year persistence
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production'
     })
     
     return { success: true, message: 'Success' }

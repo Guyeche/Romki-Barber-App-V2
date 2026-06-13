@@ -1,40 +1,15 @@
 # **Project Blueprint: Romki-Barber-App-V2**
 
 ## **Overview**
-Romki-Barber-App-V2 is a Next.js application tailored for a barber shop, utilizing Firebase for backend services. The current development phase focuses on stabilizing the build process and resolving Webpack configuration errors related to internationalization libraries.
+Romki-Barber-App-V2 is a Next.js application tailored for a barber shop, utilizing Firebase and Supabase for backend services. The current development phase focuses on enhancing the admin login usability, allowing credentials saving and session persistence.
 
-## **Current Objectives**
-1.  **Resolve Webpack Build Warnings:** Fix the `PackFileCacheStrategy` warning associated with `next-intl`.
-2.  **Stabilize Build Pipeline:** Ensure the application builds and runs without errors.
-3.  **Establish Command Protocol:** Ensure the AI explicitly requests user intervention for command execution.
+## **Features & Architecture**
+- **Framework:** Next.js (App Router, Node/React Server Components, next-intl for multi-language support).
+- **Styling:** TailwindCSS with PostCSS (`postcss.config.mjs`).
+- **Database/Backend:** Supabase integration, Resend email service, and Google Calendar API integration.
+- **Admin Authentication:** Simple single-password authentication validated via server actions (`app/actions.ts`), using cookie-based session verification (`admin_session`).
+- **Credentials Auto-Save & Persistent Login:** The admin login uses standard autocomplete elements (`username` and `current-password`) with a persistent cookie session (1 year) to automatically sign in return visitors.
 
-## **Action Plan: Troubleshooting & Fixes**
-
-### **Step 1: Configuration Analysis & Fix**
-*   **Context:** The error `Parsing of .../next-intl/... failed at 'import(t)'` indicates Webpack is failing to parse a dynamic import in the `next-intl` package. This is often due to the package not being transpiled by Next.js.
-*   **Action:**
-    *   Locate `next.config.js` or `next.config.mjs`.
-    *   Add or update the `transpilePackages` option to include `'next-intl'`.
-    *   *Example Config:*
-        ```js
-        const nextConfig = {
-          transpilePackages: ['next-intl'],
-          // ... other config
-        };
-        ```
-
-### **Step 2: Clean Environment**
-*   **Context:** Webpack caching issues can persist even after configuration changes.
-*   **Action:** Instruct the user to clean the build cache.
-*   **Command:** `rm -rf .next` (or Windows equivalent) and potentially `rm -rf node_modules/.cache`.
-
-### **Step 3: Dependency Verification**
-*   **Context:** Ensure `next` and `next-intl` versions are compatible.
-*   **Action:** Check `package.json` if errors persist.
-
-### **Step 4: Build Verification**
-*   **Action:** Instruct the user to run the build command to verify the fix.
-*   **Command:** `npm run build`
-
-## **Operational Guidelines**
-*   **User Commands:** The AI will explicitly state the command the user needs to run at each step (e.g., "Please run `npm install` now").
+## **Execution History & Troubleshooting**
+- **PostCSS & Build Fixes:** Fixed ESM-type compiler issues by removing `"type": "module"` from `package.json` and cleaning PostCSS configs.
+- **TypeScript Config:** Excluded the untracked `./barberlaki-landing-lux` directory from `tsconfig.json` to prevent type-checking compilation failures.
