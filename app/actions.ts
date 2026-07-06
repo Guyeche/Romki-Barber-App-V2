@@ -10,6 +10,7 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 import { formatIsraeliDate } from '../lib/date-utils'
+import { isSlotBlocked } from '../lib/blocks'
 
 // --- INTERFACES & SCHEMAS ---
 
@@ -100,6 +101,7 @@ export async function bookAppointment(prevState: AppointmentFormState | undefine
         serverConfigError: 'Server config error',
         dayUnavailable: 'Day unavailable',
         timeSlotBooked: 'Time slot booked',
+        timeUnavailable: 'That time is no longer available',
         success: 'Booking confirmed',
         failedCalendarEvent: 'Calendar event failed',
         criticalError: 'Critical error',
@@ -150,6 +152,22 @@ export async function bookAppointment(prevState: AppointmentFormState | undefine
 
     if (blockedDay) {
       return { message: messages.dayUnavailable };
+    }
+
+    // 1b. Reject if the requested time falls inside a schedule block
+    // (recurring break for this weekday, or a one-off block on this date).
+    const weekday = new Date(date + 'T00:00:00').getDay();
+    const { data: scheduleBlocks, error: blocksError } = await supabase
+      .from('schedule_blocks')
+      .select('day_of_week, date, start_time, end_time')
+      .or(`day_of_week.eq.${weekday},date.eq.${date}`);
+
+    if (blocksError) {
+      throw new Error('Database error while checking schedule blocks.');
+    }
+
+    if (scheduleBlocks && isSlotBlocked(time.substring(0, 5), scheduleBlocks)) {
+      return { message: messages.timeUnavailable };
     }
 
     // 2. Try to insert the new appointment.

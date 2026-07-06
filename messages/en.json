@@ -27,15 +27,15 @@
     "services": {
       "haircut": {
         "description": "Precision cutting tailored to your face shape and personal style.",
-        "price": "₪80"
+        "price": "₪60"
       },
       "beardTrim": {
         "description": "Expert beard shaping and grooming for a clean, refined finish.",
-        "price": "₪50"
+        "price": "₪35"
       },
       "combo": {
         "description": "The full treatment — a fresh haircut and a sharp beard trim in one visit.",
-        "price": "₪110"
+        "price": "₪70"
       }
     },
     "about": {
@@ -76,6 +76,7 @@
     "success": "Success! Your appointment is confirmed for {{date}} at {{time}}.",
     "validationFailed": "Validation failed. Please check your input.",
     "timeSlotBooked": "This time slot is already booked. Please choose another time.",
+    "timeUnavailable": "That time is no longer available. Please pick another time.",
     "dayUnavailable": "This day is unavailable for booking. Please choose another date.",
     "serverError": "An unexpected server error occurred.",
     "errorOccurred": "An error occurred: {{message}} Please try again.",
