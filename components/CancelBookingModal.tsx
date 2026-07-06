@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useFormState, useFormStatus } from 'react-dom'
+import { createPortal, useFormState, useFormStatus } from 'react-dom'
 import { useTranslations } from 'next-intl'
 import { verifyAndGetAppointments, cancelClientAppointment } from '../app/client-actions'
 import { formatIsraeliDate } from '../lib/date-utils'
@@ -68,7 +68,9 @@ export default function CancelBookingModal() {
         <span className="hidden sm:inline">{t('myBookings')}</span>
       </button>
 
-      {isOpen && (
+      {/* Portal to <body>: the navbar's backdrop-filter makes it the containing
+          block for position:fixed, which would trap the overlay inside the nav */}
+      {isOpen && createPortal(
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4" aria-labelledby="modal-title" role="dialog" aria-modal="true">
           {/* Backdrop */}
           <div
@@ -78,9 +80,9 @@ export default function CancelBookingModal() {
           ></div>
 
           {/* Modal Content */}
-          <div className="relative z-10 bg-coal rounded-2xl text-left overflow-hidden shadow-2xl transform transition-all w-full max-w-lg border border-line">
+          <div className="relative z-10 bg-coal rounded-2xl text-start overflow-hidden shadow-2xl transform transition-all w-full max-w-lg border border-line">
             <div className="px-6 py-6">
-                <div className="text-center sm:text-left w-full">
+                <div className="text-center sm:text-start w-full">
                     <h3 className="font-display text-xl leading-6 font-semibold text-cream" id="modal-title">
                       {t('title')}
                     </h3>
@@ -124,7 +126,7 @@ export default function CancelBookingModal() {
                                         </div>
                                         <button
                                             onClick={() => handleCancel(apt.id, apt.customer_name, apt.email)}
-                                            className="ml-4 border border-red-500/50 text-red-400 hover:bg-red-500/10 font-semibold py-1.5 px-3 rounded-lg text-xs transition-colors"
+                                            className="ms-4 border border-red-500/50 text-red-400 hover:bg-red-500/10 font-semibold py-1.5 px-3 rounded-lg text-xs transition-colors"
                                         >
                                             {tCommon('cancel')}
                                         </button>
@@ -148,7 +150,8 @@ export default function CancelBookingModal() {
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   )
