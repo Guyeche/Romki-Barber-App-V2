@@ -77,27 +77,27 @@ export default function ScheduleForm({ initialSchedule, initialBookingWindow }: 
   };
 
   return (
-      <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
-          <div className="mb-6 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
-              <label className="block text-sm font-semibold mb-2 text-gray-900 dark:text-white">
+      <div className="bg-coal border border-line shadow rounded-2xl p-6">
+          <div className="mb-6 p-4 bg-ink/60 border border-line rounded-lg">
+              <label className="block text-sm font-semibold mb-2 text-cream">
                   {t('bookingWindow')}
               </label>
               <select
                   value={bookingWindow}
                   onChange={(e) => setBookingWindow(parseInt(e.target.value))}
-                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                  className="bg-ink border border-line text-cream text-sm rounded-lg focus:ring-1 focus:ring-gold/50 focus:border-gold block w-full p-2.5 transition-colors"
               >
-                  <option value={7} className="bg-white text-gray-900 dark:bg-gray-700 dark:text-white">{t('week1')}</option>
-                  <option value={14} className="bg-white text-gray-900 dark:bg-gray-700 dark:text-white">{t('weeks2')}</option>
-                  <option value={21} className="bg-white text-gray-900 dark:bg-gray-700 dark:text-white">{t('weeks3')}</option>
-                  <option value={30} className="bg-white text-gray-900 dark:bg-gray-700 dark:text-white">{t('month1')}</option>
-                  <option value={60} className="bg-white text-gray-900 dark:bg-gray-700 dark:text-white">{t('months2')}</option>
+                  <option value={7}>{t('week1')}</option>
+                  <option value={14}>{t('weeks2')}</option>
+                  <option value={21}>{t('weeks3')}</option>
+                  <option value={30}>{t('month1')}</option>
+                  <option value={60}>{t('months2')}</option>
               </select>
           </div>
 
           <div className="space-y-4">
               {schedule.map((day, index) => (
-                  <div key={day.day_of_week} className="flex flex-col md:flex-row md:items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 last:border-0">
+                  <div key={day.day_of_week} className="flex flex-col md:flex-row md:items-center justify-between p-4 border-b border-line last:border-0">
                       <div className="flex items-center mb-2 md:mb-0 w-32">
                           <label className="font-semibold text-lg">{getDayName(day.day_of_week)}</label>
                       </div>
@@ -108,9 +108,9 @@ export default function ScheduleForm({ initialSchedule, initialBookingWindow }: 
                                   type="checkbox"
                                   checked={day.is_active}
                                   onChange={(e) => updateDay(index, 'is_active', e.target.checked)}
-                                  className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                  className="w-5 h-5 accent-gold bg-ink border-line rounded focus:ring-gold/50 focus:ring-2"
                               />
-                              <span className="ml-2 rtl:mr-2 text-sm text-gray-700 dark:text-gray-300">
+                              <span className="ml-2 rtl:mr-2 text-sm text-smoke">
                                   {day.is_active ? t('active') : t('closed')}
                               </span>
                           </div>
@@ -118,24 +118,24 @@ export default function ScheduleForm({ initialSchedule, initialBookingWindow }: 
                           {day.is_active && (
                               <div className="flex items-center space-x-2 rtl:space-x-reverse ml-4 rtl:mr-4">
                                   <div className="flex flex-col">
-                                      <label className="text-xs text-gray-500 mb-1">{t('start')}</label>
+                                      <label className="text-xs text-smoke mb-1">{t('start')}</label>
                                       <select
                                           value={day.start_time.substring(0, 5)}
                                           onChange={(e) => updateDay(index, 'start_time', e.target.value)}
-                                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                                          className="bg-ink border border-line text-cream text-sm rounded-lg focus:ring-1 focus:ring-gold/50 focus:border-gold block w-full p-2.5 transition-colors tabular-nums"
                                       >
                                           {timeOptions.map((time) => (
                                               <option key={time} value={time}>{time}</option>
                                           ))}
                                       </select>
                                   </div>
-                                  <span className="text-gray-500 self-end mb-3">-</span>
+                                  <span className="text-smoke self-end mb-3">-</span>
                                   <div className="flex flex-col">
-                                      <label className="text-xs text-gray-500 mb-1">{t('end')}</label>
+                                      <label className="text-xs text-smoke mb-1">{t('end')}</label>
                                       <select
                                           value={day.end_time.substring(0, 5)}
                                           onChange={(e) => updateDay(index, 'end_time', e.target.value)}
-                                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                                          className="bg-ink border border-line text-cream text-sm rounded-lg focus:ring-1 focus:ring-gold/50 focus:border-gold block w-full p-2.5 transition-colors tabular-nums"
                                       >
                                           {timeOptions.map((time) => (
                                               <option key={time} value={time}>{time}</option>
@@ -151,14 +151,14 @@ export default function ScheduleForm({ initialSchedule, initialBookingWindow }: 
 
           <div className="mt-6 flex justify-end items-center">
               {message && (
-                  <span className={`mx-4 text-sm ${message.includes('success') ? 'text-green-600' : 'text-red-600'}`}>
+                  <span className={`mx-4 text-sm ${message === t('success') ? 'text-gold' : 'text-red-400'}`}>
                       {message}
                   </span>
               )}
               <button
                   onClick={handleSave}
                   disabled={saving}
-                  className="px-5 py-2.5 text-sm font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:bg-gray-400"
+                  className="px-5 py-2.5 text-sm font-semibold text-ink bg-gold hover:bg-gold-bright focus:ring-2 focus:outline-none focus:ring-gold/50 rounded-lg text-center transition-colors disabled:opacity-60"
               >
                   {saving ? t('saving') : t('save')}
               </button>

@@ -18,7 +18,45 @@
   "home": {
     "title": "BarberLaki",
     "description": "Your hair, our passion. Book your appointment now and experience the best haircut of your life.",
-    "bookNow": "Book Now"
+    "bookNow": "Book Now",
+    "tagline": "Premium Grooming",
+    "heroTitle1": "Your hair,",
+    "heroTitle2": "our passion.",
+    "ourServices": "Our Services",
+    "whatWeOffer": "What We Offer",
+    "services": {
+      "haircut": {
+        "description": "Precision cutting tailored to your face shape and personal style.",
+        "price": "₪80"
+      },
+      "beardTrim": {
+        "description": "Expert beard shaping and grooming for a clean, refined finish.",
+        "price": "₪50"
+      },
+      "combo": {
+        "description": "The full treatment — a fresh haircut and a sharp beard trim in one visit.",
+        "price": "₪110"
+      }
+    },
+    "about": {
+      "eyebrow": "Meet the Barber",
+      "title1": "Craftsmanship",
+      "title2": "& Precision",
+      "body1": "Every cut gets full attention — from the first consultation to the final detail. Classic and modern techniques, tailored to you.",
+      "body2": "At BarberLaki, a great haircut is more than a service — it's an experience.",
+      "imageAlt": "The barber at BarberLaki"
+    },
+    "footer": {
+      "tagline": "Your hair, our passion. Premium grooming for the modern gentleman.",
+      "hoursTitle": "Opening Hours",
+      "hours1": "Sun – Thu: 9:00 – 20:00",
+      "hours2": "Friday: 9:00 – 14:00",
+      "hours3": "Saturday: Closed",
+      "visitTitle": "Visit Us",
+      "location": "Israel",
+      "phone": "+972 50-000-0000",
+      "rights": "© 2026 BarberLaki. All rights reserved."
+    }
   },
   "booking": {
     "title": "Book Your Appointment",

@@ -1,9 +1,35 @@
 @import "tailwindcss";
 
+@theme {
+  /* BarberLaki design tokens — dark premium grooming theme */
+  --color-ink: #0e0d0b;
+  --color-coal: #171512;
+  --color-card: #1c1915;
+  --color-line: #2f2a23;
+  --color-gold: #d2a13a;
+  --color-gold-bright: #e7c368;
+  --color-cream: #f1ede4;
+  --color-smoke: #a39c8f;
+}
+
+/* Font vars reference next/font variables set on <body>, so they must be inlined */
+@theme inline {
+  --font-display: var(--font-playfair), var(--font-frank-ruhl), Georgia, serif;
+  --font-body: var(--font-rubik), system-ui, sans-serif;
+}
+
 body {
-  @apply bg-gradient-to-br from-slate-50 to-slate-200 dark:from-slate-900 dark:to-slate-950 min-h-screen text-slate-900 dark:text-slate-100 antialiased bg-no-repeat bg-center bg-cover bg-fixed;
+  @apply bg-ink text-cream font-body min-h-screen antialiased bg-no-repeat bg-center bg-cover bg-fixed;
   /* Improve background positioning to focus on top-center (faces) rather than dead center */
-  background-position: top center; 
+  background-position: top center;
+}
+
+/* Gold gradient headline treatment */
+.text-gradient-gold {
+  background: linear-gradient(120deg, #e7c368 0%, #d2a13a 45%, #b9861f 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 /* RTL Support */

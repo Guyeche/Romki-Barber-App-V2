@@ -16,7 +16,7 @@ export default function CancelButton({ id }: { id: number }) {
                         e.preventDefault();
                     }
                 }}
-                className="px-3 py-1 text-xs font-medium text-white bg-red-600 rounded-md hover:bg-red-700 transition-colors"
+                className="px-3 py-1.5 text-xs font-semibold text-red-400 border border-red-500/50 rounded-lg hover:bg-red-500/10 transition-colors"
             >
                 {t('cancel')}
             </button>

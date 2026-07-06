@@ -37,16 +37,16 @@ export default async function AdminPage() {
   const appointments = await getAppointments();
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white pb-20">
-      <header className="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-10">
+    <div className="min-h-screen text-cream pb-20">
+      <header className="bg-coal/90 backdrop-blur-md border-b border-line shadow-md sticky top-0 z-10">
         <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 dark:text-white">{t('dashboard')}</h1>
+          <h1 className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-cream">{t('dashboard')}</h1>
           <div className="flex items-center space-x-4 rtl:space-x-reverse">
-            <Link href="/admin/schedule" className="px-3 py-2 text-sm font-medium text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
+            <Link href="/admin/schedule" className="px-3 py-2 text-sm font-medium text-gold hover:text-gold-bright transition-colors">
               {t('schedule.title')}
             </Link>
             <form action={logout}>
-              <button type="submit" className="px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors shadow-sm">{t('logout')}</button>
+              <button type="submit" className="px-4 py-2 text-sm font-semibold text-ink bg-gold rounded-lg hover:bg-gold-bright transition-colors shadow-sm">{t('logout')}</button>
             </form>
           </div>
         </div>

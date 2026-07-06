@@ -8,13 +8,13 @@ export default function LanguageSwitcher() {
   const currentLocale = useLocale();
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-1 rounded-lg border border-line bg-coal p-1">
       <button
         onClick={() => switchLanguage('en')}
-        className={`px-3 py-1 text-sm font-medium rounded-md transition-colors ${
+        className={`px-3 py-1 text-xs font-semibold rounded-md transition-colors ${
           currentLocale === 'en'
-            ? 'bg-blue-600 text-white'
-            : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
+            ? 'bg-gold text-ink'
+            : 'text-smoke hover:text-cream'
         }`}
         aria-label="Switch to English"
       >
@@ -22,10 +22,10 @@ export default function LanguageSwitcher() {
       </button>
       <button
         onClick={() => switchLanguage('he')}
-        className={`px-3 py-1 text-sm font-medium rounded-md transition-colors ${
+        className={`px-3 py-1 text-xs font-semibold rounded-md transition-colors ${
           currentLocale === 'he'
-            ? 'bg-blue-600 text-white'
-            : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
+            ? 'bg-gold text-ink'
+            : 'text-smoke hover:text-cream'
         }`}
         aria-label="Switch to Hebrew"
       >

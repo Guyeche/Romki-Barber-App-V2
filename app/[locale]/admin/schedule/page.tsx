@@ -32,9 +32,9 @@ export default async function SchedulePage() {
   const bookingWindow = settings?.value ? parseInt(settings.value) : 14;
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white p-8">
+    <div className="min-h-screen text-cream p-8">
         <div className="max-w-4xl mx-auto">
-            <h1 className="text-3xl font-bold mb-8">{t('title')}</h1>
+            <h1 className="font-display text-3xl font-bold mb-8">{t('title')}</h1>
             <ScheduleForm initialSchedule={schedule || []} initialBookingWindow={bookingWindow} />
         </div>
     </div>
