@@ -5,6 +5,7 @@ import { supabase } from '../lib/supabase'
 import { useTranslations, useLocale } from 'next-intl'
 import { format } from 'date-fns'
 import { enUS, he } from 'date-fns/locale'
+import { isSlotBlocked, blocksForDate, type ScheduleBlock } from '../lib/blocks'
 
 interface ScheduleDay {
   day_of_week: number;
@@ -23,6 +24,7 @@ export default function DateTimePicker({ onDateTimeChange }: DateTimePickerProps
   const [bookedTimes, setBookedTimes] = useState<string[]>([])
   const [blockedDays, setBlockedDays] = useState<Date[]>([])
   const [schedule, setSchedule] = useState<ScheduleDay[]>([])
+  const [blocks, setBlocks] = useState<ScheduleBlock[]>([])
   const [bookingWindow, setBookingWindow] = useState<number>(14);
   const [availableDates, setAvailableDates] = useState<Date[]>([])
   const [isLoading, setIsLoading] = useState(false);
@@ -51,7 +53,8 @@ export default function DateTimePicker({ onDateTimeChange }: DateTimePickerProps
         if (res.ok) {
           const data = await res.json();
           if (data.bookingWindow) setBookingWindow(data.bookingWindow);
-          
+          if (data.blocks) setBlocks(data.blocks);
+
           if (data.schedule) {
              setSchedule(data.schedule);
              
@@ -167,6 +170,14 @@ export default function DateTimePicker({ onDateTimeChange }: DateTimePickerProps
       }
     }
 
+    // Remove slots that fall inside a schedule block (recurring break or one-off block).
+    let available = slots;
+    if (selectedDay) {
+        const dayStr = `${selectedDay.getFullYear()}-${String(selectedDay.getMonth() + 1).padStart(2, '0')}-${String(selectedDay.getDate()).padStart(2, '0')}`;
+        const dayBlocks = blocksForDate(blocks, dayStr, selectedDay.getDay());
+        available = available.filter(time => !isSlotBlocked(time, dayBlocks));
+    }
+
     // Filter out past times if the selected day is today
     if (selectedDay) {
         const now = new Date();
@@ -178,7 +189,7 @@ export default function DateTimePicker({ onDateTimeChange }: DateTimePickerProps
             const currentHour = now.getHours();
             const currentMinute = now.getMinutes();
 
-            return slots.filter(time => {
+            return available.filter(time => {
                 const [slotHour, slotMinute] = time.split(':').map(Number);
                 if (slotHour < currentHour) return false;
                 if (slotHour === currentHour && slotMinute <= currentMinute) return false;
@@ -187,7 +198,7 @@ export default function DateTimePicker({ onDateTimeChange }: DateTimePickerProps
         }
     }
 
-    return slots
+    return available
   }
 
   const timeSlots = generateTimeSlots()

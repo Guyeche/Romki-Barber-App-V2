@@ -126,7 +126,47 @@
       "weeks2": "2 Weeks",
       "weeks3": "3 Weeks",
       "month1": "1 Month",
-      "months2": "2 Months"
+      "months2": "2 Months",
+      "break": "Break",
+      "breakStart": "Break from",
+      "breakEnd": "Break to",
+      "addBreak": "Add break",
+      "removeBreak": "Remove break",
+      "applyBreakAll": "Apply to all active days",
+      "breakInvalid": "Break end must be after its start."
+    },
+    "timeOff": {
+      "title": "Time Off",
+      "nav": "Time Off",
+      "subtitle": "Block off part of a specific day. Existing bookings are kept.",
+      "date": "Date",
+      "start": "From",
+      "end": "To",
+      "reason": "Reason (optional)",
+      "reasonPlaceholder": "e.g. Dentist",
+      "add": "Add block",
+      "adding": "Adding...",
+      "delete": "Delete",
+      "empty": "No upcoming time-off blocks.",
+      "invalid": "End time must be after start time.",
+      "error": "Failed to save. Please try again.",
+      "overlapWarning": "{count} existing booking(s) fall in this window — they will be kept."
+    },
+    "blockNow": {
+      "button": "Block time now",
+      "title": "Block time from now",
+      "preset20": "20 min",
+      "preset1h": "1 hour",
+      "presetRestOfDay": "Rest of today",
+      "reason": "Reason (optional)",
+      "reasonPlaceholder": "e.g. Stepped out",
+      "confirm": "Block",
+      "confirming": "Blocking...",
+      "cancel": "Cancel",
+      "closedToday": "You're not open today, so there's nothing to block.",
+      "success": "Time blocked.",
+      "error": "Failed to block time. Please try again.",
+      "overlapWarning": "{count} existing booking(s) fall in this window — they will be kept."
     }
   },
   "appointments": {

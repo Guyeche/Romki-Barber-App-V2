@@ -31,11 +31,21 @@ export default async function SchedulePage() {
 
   const bookingWindow = settings?.value ? parseInt(settings.value) : 14;
 
+  // Fetch recurring breaks (schedule_blocks rows tied to a weekday).
+  const { data: recurringBreaks } = await supabase
+    .from('schedule_blocks')
+    .select('day_of_week, date, start_time, end_time, reason')
+    .not('day_of_week', 'is', null);
+
   return (
     <div className="min-h-screen text-cream p-8">
         <div className="max-w-4xl mx-auto">
             <h1 className="font-display text-3xl font-bold mb-8">{t('title')}</h1>
-            <ScheduleForm initialSchedule={schedule || []} initialBookingWindow={bookingWindow} />
+            <ScheduleForm
+                initialSchedule={schedule || []}
+                initialBookingWindow={bookingWindow}
+                initialBreaks={recurringBreaks || []}
+            />
         </div>
     </div>
   );
