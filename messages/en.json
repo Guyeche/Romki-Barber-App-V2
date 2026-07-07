@@ -164,7 +164,19 @@
       "empty": "No upcoming time-off blocks.",
       "invalid": "End time must be after start time.",
       "error": "Failed to save. Please try again.",
-      "overlapWarning": "{count} existing booking(s) fall in this window — they will be kept."
+      "overlapWarning": "{count} existing booking(s) fall in this window — they will be kept.",
+      "modeHours": "Block hours",
+      "modeVacation": "Vacation (full days)",
+      "fromDate": "From date",
+      "toDate": "To date",
+      "vacationReasonPlaceholder": "e.g. Vacation",
+      "addVacation": "Add vacation",
+      "vacationsTitle": "Vacations / blocked days",
+      "hoursTitle": "Hour blocks",
+      "rangeInvalid": "The end date must be on or after the start date.",
+      "vacationOverlap": "{count} existing appointment(s) fall within this vacation — they will be kept.",
+      "emptyVacations": "No vacations scheduled.",
+      "daysCount": "{count} days"
     },
     "blockNow": {
       "button": "Block time now",

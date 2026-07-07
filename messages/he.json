@@ -82,8 +82,8 @@
     "bookAnother": "הזמן תור נוסף",
     "services": {
       "haircut": "תספורת",
-      "beardTrim": "זקן",
-      "haircutBeardTrim": "תספורת וזקן",
+      "beardTrim": "זקן + מסגרת",
+      "haircutBeardTrim": "תספורת + זקן",
       "scissorsHaircut": "תספורת מספריים",
       "oneLengthClipper": "מספר אחיד"
     },
@@ -164,7 +164,19 @@
       "empty": "אין חסימות זמן קרובות.",
       "invalid": "שעת הסיום חייבת להיות אחרי שעת ההתחלה.",
       "error": "השמירה נכשלה. אנא נסה שוב.",
-      "overlapWarning": "{count} תורים קיימים נופלים בטווח הזה — הם יישמרו."
+      "overlapWarning": "{count} תורים קיימים נופלים בטווח הזה — הם יישמרו.",
+      "modeHours": "חסימת שעות",
+      "modeVacation": "חופשה (ימים שלמים)",
+      "fromDate": "מתאריך",
+      "toDate": "עד תאריך",
+      "vacationReasonPlaceholder": "לדוגמה: חופשה",
+      "addVacation": "הוסף חופשה",
+      "vacationsTitle": "חופשות / ימים חסומים",
+      "hoursTitle": "חסימות שעות",
+      "rangeInvalid": "תאריך הסיום חייב להיות באותו יום או אחרי תאריך ההתחלה.",
+      "vacationOverlap": "{count} תורים קיימים נופלים בטווח החופשה — הם יישמרו.",
+      "emptyVacations": "אין חופשות מתוכננות.",
+      "daysCount": "{count} ימים"
     },
     "blockNow": {
       "button": "חסום זמן עכשיו",

@@ -26,6 +26,12 @@ export default async function TimeOffPage() {
     .order('date', { ascending: true })
     .order('start_time', { ascending: true });
 
+  const { data: blockedDays } = await supabase
+    .from('blocked_days')
+    .select('id, date, reason')
+    .gte('date', today)
+    .order('date', { ascending: true });
+
   return (
     <div className="min-h-screen text-cream p-8">
       <div className="max-w-4xl mx-auto">
@@ -39,7 +45,7 @@ export default async function TimeOffPage() {
           </Link>
         </div>
         <p className="text-smoke text-sm mb-8">{t('subtitle')}</p>
-        <TimeOffForm initialBlocks={blocks || []} />
+        <TimeOffForm initialBlocks={blocks || []} initialVacationDays={blockedDays || []} />
       </div>
     </div>
   );
