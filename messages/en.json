@@ -46,6 +46,10 @@
       "body2": "At BarberLaki, a great haircut is more than a service — it's an experience.",
       "imageAlt": "The barber at BarberLaki"
     },
+    "gallery": {
+      "eyebrow": "Our Work",
+      "title": "Gallery"
+    },
     "footer": {
       "tagline": "Your hair, our passion. Premium grooming for the modern gentleman.",
       "hoursTitle": "Opening Hours",

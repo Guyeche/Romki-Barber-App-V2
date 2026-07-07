@@ -1,6 +1,7 @@
 import { getTranslations } from 'next-intl/server';
 import { Link } from '@/lib/navigation';
 import { Scissors, Sparkles, Clock, MapPin, Phone } from 'lucide-react';
+import Gallery from '@/components/Gallery';
 
 export default async function Home() {
   const t = await getTranslations('home');
@@ -98,7 +99,7 @@ export default async function Home() {
             <div className="relative mx-auto w-full max-w-md">
               <div className="absolute -inset-px rounded-2xl bg-gradient-to-br from-gold/20 via-transparent to-gold/10" />
               <img
-                src="/barber-portrait.jpg"
+                src="/barber-portrait.webp"
                 alt={t('about.imageAlt')}
                 className="relative w-full rounded-2xl object-cover"
                 loading="lazy"
@@ -123,6 +124,17 @@ export default async function Home() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Gallery */}
+      <section id="gallery" className="border-t border-line py-24 lg:py-32">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="mb-16 text-center">
+            <span className="text-xs font-semibold uppercase tracking-[0.3em] text-gold">{t('gallery.eyebrow')}</span>
+            <h2 className="mt-3 font-display text-4xl font-bold md:text-5xl">{t('gallery.title')}</h2>
+          </div>
+          <Gallery />
         </div>
       </section>
 

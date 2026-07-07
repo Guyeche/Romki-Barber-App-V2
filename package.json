@@ -19,6 +19,7 @@
     "react-day-picker": "^9.13.0",
     "react-dom": "^18",
     "resend": "^6.7.0",
+    "sharp": "^0.35.3",
     "zod": "^4.3.5"
   },
   "devDependencies": {
