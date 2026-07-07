@@ -36,6 +36,14 @@
       "combo": {
         "description": "The full treatment — a fresh haircut and a sharp beard trim in one visit.",
         "price": "₪70"
+      },
+      "scissorsHaircut": {
+        "description": "A haircut done entirely with scissors — for a soft, natural, precise finish.",
+        "price": "₪80"
+      },
+      "oneLengthClipper": {
+        "description": "A single clipper guard all over — a clean, uniform look.",
+        "price": "₪50"
       }
     },
     "about": {
@@ -75,7 +83,9 @@
     "services": {
       "haircut": "Haircut",
       "beardTrim": "Beard Trim",
-      "haircutBeardTrim": "Haircut & Beard Trim"
+      "haircutBeardTrim": "Haircut & Beard Trim",
+      "scissorsHaircut": "Scissors Haircut",
+      "oneLengthClipper": "One Length Clipper Cut"
     },
     "success": "Success! Your appointment is confirmed for {{date}} at {{time}}.",
     "validationFailed": "Validation failed. Please check your input.",

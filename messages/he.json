@@ -36,6 +36,14 @@
       "combo": {
         "description": "הטיפול המלא — תספורת רעננה ועיצוב זקן מדויק בביקור אחד.",
         "price": "₪70"
+      },
+      "scissorsHaircut": {
+        "description": "תספורת בעבודת מספריים בלבד — לגימור רך, טבעי ומדויק.",
+        "price": "₪80"
+      },
+      "oneLengthClipper": {
+        "description": "גילוח במספר אחיד על כל הראש — מראה נקי ואחיד.",
+        "price": "₪50"
       }
     },
     "about": {
@@ -75,7 +83,9 @@
     "services": {
       "haircut": "תספורת",
       "beardTrim": "זקן",
-      "haircutBeardTrim": "תספורת וזקן"
+      "haircutBeardTrim": "תספורת וזקן",
+      "scissorsHaircut": "תספורת מספריים",
+      "oneLengthClipper": "מספר אחיד"
     },
     "success": "הצלחה! התור שלך אושר ל-{{date}} בשעה {{time}}.",
     "validationFailed": "האימות נכשל. אנא בדוק את הקלט שלך.",

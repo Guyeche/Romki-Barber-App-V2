@@ -11,6 +11,8 @@ export default async function Home() {
     { icon: Scissors, name: tServices('haircut'), description: t('services.haircut.description'), price: t('services.haircut.price') },
     { icon: Sparkles, name: tServices('beardTrim'), description: t('services.beardTrim.description'), price: t('services.beardTrim.price') },
     { icon: Scissors, name: tServices('haircutBeardTrim'), description: t('services.combo.description'), price: t('services.combo.price') },
+    { icon: Scissors, name: tServices('scissorsHaircut'), description: t('services.scissorsHaircut.description'), price: t('services.scissorsHaircut.price') },
+    { icon: Scissors, name: tServices('oneLengthClipper'), description: t('services.oneLengthClipper.description'), price: t('services.oneLengthClipper.price') },
   ];
 
   return (

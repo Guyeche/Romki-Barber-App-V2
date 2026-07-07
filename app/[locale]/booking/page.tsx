@@ -102,6 +102,8 @@ export default function BookingPage() {
               <select id="service" name="service" required className={inputClasses}>
                 <option>{t('services.haircutBeardTrim')}</option>
                 <option>{t('services.haircut')}</option>
+                <option>{t('services.scissorsHaircut')}</option>
+                <option>{t('services.oneLengthClipper')}</option>
                 <option>{t('services.beardTrim')}</option>
               </select>
             </div>
