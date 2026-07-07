@@ -3,9 +3,13 @@
 import { useState, useEffect, useCallback } from 'react';
 
 // Photos are pre-optimized into /public/gallery/{thumb,full}/N.webp by the
-// image build step. Keep GALLERY_COUNT in sync with the number of files there.
-const GALLERY_COUNT = 35;
-const photos = Array.from({ length: GALLERY_COUNT }, (_, i) => i + 1);
+// image build step. `photos` lists the file numbers that actually exist
+// (some were removed), so keep it in sync with the files in those folders.
+const photos = [
+  1, 4, 6, 7, 9, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
+  26, 27, 28, 29, 30, 31, 32, 33, 35,
+];
+const GALLERY_COUNT = photos.length;
 
 export default function Gallery() {
   const [open, setOpen] = useState<number | null>(null);
