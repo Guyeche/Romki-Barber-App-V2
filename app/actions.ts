@@ -170,7 +170,23 @@ export async function bookAppointment(prevState: AppointmentFormState | undefine
       return { message: messages.timeUnavailable };
     }
 
-    // 2. Try to insert the new appointment.
+    // 2. Reject if this slot is already taken. The DB has a UNIQUE (date, time)
+    // constraint that enforces this atomically (see the 23505 handling below);
+    // this pre-check is a friendly guard that also covers the case where that
+    // constraint has not yet been applied, so a double-submit can't create a
+    // duplicate row.
+    const { data: existingSlot } = await supabase
+      .from('appointments')
+      .select('id')
+      .eq('date', date)
+      .eq('time', time)
+      .limit(1);
+
+    if (existingSlot && existingSlot.length > 0) {
+      return { message: messages.timeSlotBooked };
+    }
+
+    // 3. Try to insert the new appointment.
     const { data: newAppointment, error: insertError } = await supabase
       .from('appointments')
       .insert([{
@@ -194,7 +210,7 @@ export async function bookAppointment(prevState: AppointmentFormState | undefine
     
     newAppointmentId = newAppointment.id;
 
-    // 3. Send emails
+    // 4. Send emails
     try {
       // Send to Admin (romarlaki10@gmail.com)
       await resend.emails.send({
@@ -217,7 +233,7 @@ export async function bookAppointment(prevState: AppointmentFormState | undefine
       throw new Error('Failed to send confirmation emails.');
     }
 
-    // 4. Create calendar event
+    // 5. Create calendar event
     try {
       await createCalendarEvent(newAppointment);
     } catch (calendarError) {
