@@ -33,6 +33,6 @@ These control the look of your app. If you don't add them, the app will use the 
 
 ## 🚀 Deployment Checklist
 
-1.  **Run Migrations:** Ensure you have run `schema.sql`, `schedule_migration.sql`, and `settings_migration.sql` in your Supabase SQL Editor.
+1.  **Run Migrations:** Ensure you have run every migration in `migrations/`, in the order listed in [migrations/README.md](migrations/README.md), in your Supabase SQL Editor.
 2.  **Add Env Vars:** Copy all the mandatory variables from your local `.env` file to Vercel.
 3.  **Deploy:** Push your code to GitHub/GitLab/Bitbucket connected to Vercel.
