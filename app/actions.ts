@@ -27,8 +27,8 @@ interface AppointmentFormState {
 }
 
 const schema = z.object({
-  name: z.string().min(1, { message: 'Name is required' }),
-  email: z.string().email({ message: 'Invalid email address' }),
+  name: z.string().trim().min(1, { message: 'Name is required' }),
+  email: z.string().trim().email({ message: 'Invalid email address' }),
   service: z.string(),
   date: z.string().min(1, { message: 'Date is required' }),
   time: z.string().min(1, { message: 'Time is required' }),
@@ -241,7 +241,7 @@ export async function bookAppointment(prevState: AppointmentFormState | undefine
         throw new Error(messages.failedCalendarEvent);
     }
 
-    return { message: messages.success.replace('{{date}}', formatIsraeliDate(date)).replace('{{time}}', time) };
+    return { success: true, message: messages.success.replace('{{date}}', formatIsraeliDate(date)).replace('{{time}}', time) };
 
   } catch (error) {
     if (newAppointmentId) {

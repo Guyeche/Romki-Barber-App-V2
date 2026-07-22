@@ -5,20 +5,22 @@ import { processCancellation } from '../lib/appointments'
 import { revalidatePath } from 'next/cache'
 
 export async function verifyAndGetAppointments(prevState: any, formData: FormData) {
-  const name = formData.get('name') as string
-  const email = formData.get('email') as string
+  const name = (formData.get('name') as string || '').trim()
+  const email = (formData.get('email') as string || '').trim()
 
   if (!name || !email) {
     return { error: 'Name and Email are required', appointments: [] }
   }
 
-  // Fetch appointments for this user that are in the future
+  // Fetch appointments for this user that are in the future.
+  // Match by email only (case-insensitive, trimmed): requiring the name to also
+  // match exactly locked out anyone who typed their name slightly differently
+  // than at booking time.
   const today = new Date().toISOString().split('T')[0]
-  
+
   const { data: appointments, error } = await supabase
     .from('appointments')
     .select('*')
-    .ilike('customer_name', name)
     .ilike('email', email)
     .gte('date', today)
     .order('date', { ascending: true })
@@ -37,13 +39,13 @@ export async function verifyAndGetAppointments(prevState: any, formData: FormDat
 }
 
 export async function cancelClientAppointment(id: number, name: string, email: string) {
-    // 1. Verify ownership AGAIN before cancelling
+    // 1. Verify ownership AGAIN before cancelling (email is the identifier,
+    // matching verifyAndGetAppointments above)
     const { data: appointment, error } = await supabase
         .from('appointments')
         .select('id')
         .eq('id', id)
-        .ilike('customer_name', name)
-        .ilike('email', email)
+        .ilike('email', (email || '').trim())
         .single()
     
     if (error || !appointment) {

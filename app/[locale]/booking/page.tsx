@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
 import { Link } from '@/lib/navigation'
 
-const initialState = {
+const initialState: { message: string; success?: boolean } = {
   message: '',
 }
 
@@ -71,8 +71,13 @@ export default function BookingPage() {
         <span className="block text-center text-xs font-semibold uppercase tracking-[0.3em] text-gold">BarberLaki</span>
         <h1 className="mt-3 font-display text-4xl font-bold text-center">{t('title')}</h1>
 
-        {!state.message ? (
+        {!state.success ? (
           <form action={handleSubmit} className="mt-10 space-y-6">
+            {state.message && (
+              <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-sm text-center" role="alert">
+                {state.message}
+              </div>
+            )}
             <div>
               <label htmlFor="name" className={labelClasses}>{t('yourName')}</label>
               <input

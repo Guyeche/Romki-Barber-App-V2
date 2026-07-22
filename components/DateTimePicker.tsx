@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { supabase } from '../lib/supabase'
 import { useTranslations, useLocale } from 'next-intl'
 import { format } from 'date-fns'
 import { enUS, he } from 'date-fns/locale'
@@ -34,17 +33,20 @@ export default function DateTimePicker({ onDateTimeChange }: DateTimePickerProps
 
   useEffect(() => {
     const fetchData = async () => {
-      // 1. Fetch Blocked Days
-      const { data: blockedData, error: blockedError } = await supabase.from('blocked_days').select('date');
+      // 1. Fetch Blocked Days via the server API — the browser anon client is
+      // subject to RLS, which silently returns no rows and made vacation days bookable.
       let blockedDates: Date[] = [];
-      if (blockedError) {
-          console.error('Error fetching blocked days:', blockedError);
-      } else {
-          blockedDates = blockedData.map(item => {
+      try {
+          const res = await fetch('/api/blocked-days');
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const { days } = await res.json();
+          blockedDates = (days ?? []).map((item: { date: string }) => {
               const date = new Date(item.date);
               return new Date(date.valueOf() + date.getTimezoneOffset() * 60 * 1000);
           });
           setBlockedDays(blockedDates);
+      } catch (e) {
+          console.error('Error fetching blocked days:', e);
       }
 
       // 2. Fetch Schedule & Settings
