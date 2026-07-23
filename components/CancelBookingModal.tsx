@@ -31,10 +31,12 @@ export default function CancelBookingModal() {
   const t = useTranslations('cancellation')
   const tCommon = useTranslations('common')
   const [cancelMessage, setCancelMessage] = useState('')
+  // In-page confirmation instead of native confirm(), which some in-app/mobile
+  // browsers suppress silently (returns false, no dialog) — cancelling looked dead.
+  const [confirmingId, setConfirmingId] = useState<number | null>(null)
 
   const handleCancel = async (id: number, name: string, email: string) => {
-    if (!confirm(t('confirmCancel'))) return;
-
+    setConfirmingId(null);
     setCancelMessage(tCommon('loading'));
     const result = await cancelClientAppointment(id, name, email);
     if (result.success) {
@@ -51,6 +53,7 @@ export default function CancelBookingModal() {
   const openModal = () => {
       setIsOpen(true);
       setCancelMessage('');
+      setConfirmingId(null);
   }
 
   return (
@@ -124,12 +127,29 @@ export default function CancelBookingModal() {
                                             <p className="text-sm font-medium text-cream tabular-nums">{formatIsraeliDate(apt.date)} - {apt.time}</p>
                                             <p className="text-sm text-smoke">{apt.service}</p>
                                         </div>
-                                        <button
-                                            onClick={() => handleCancel(apt.id, apt.customer_name, apt.email)}
-                                            className="ms-4 border border-red-500/50 text-red-400 hover:bg-red-500/10 font-semibold py-1.5 px-3 rounded-lg text-xs transition-colors"
-                                        >
-                                            {tCommon('cancel')}
-                                        </button>
+                                        {confirmingId === apt.id ? (
+                                            <div className="ms-4 flex items-center gap-2">
+                                                <button
+                                                    onClick={() => handleCancel(apt.id, apt.customer_name, apt.email)}
+                                                    className="bg-red-500 text-ink hover:bg-red-400 font-semibold py-1.5 px-3 rounded-lg text-xs transition-colors"
+                                                >
+                                                    {t('confirmCancelYes')}
+                                                </button>
+                                                <button
+                                                    onClick={() => setConfirmingId(null)}
+                                                    className="border border-line text-smoke hover:text-cream font-semibold py-1.5 px-3 rounded-lg text-xs transition-colors"
+                                                >
+                                                    {t('confirmCancelKeep')}
+                                                </button>
+                                            </div>
+                                        ) : (
+                                            <button
+                                                onClick={() => setConfirmingId(apt.id)}
+                                                className="ms-4 border border-red-500/50 text-red-400 hover:bg-red-500/10 font-semibold py-1.5 px-3 rounded-lg text-xs transition-colors"
+                                            >
+                                                {tCommon('cancel')}
+                                            </button>
+                                        )}
                                     </li>
                                 ))}
                             </ul>

@@ -112,6 +112,8 @@
     "searchPlaceholder": "Search by name...",
     "noAppointments": "No appointments scheduled.",
     "cancelConfirm": "Are you sure you want to cancel this appointment?",
+    "confirmCancelYes": "Yes, cancel",
+    "confirmCancelKeep": "Keep",
     "customer": "Customer",
     "service": "Service",
     "dateTime": "Date & Time",
@@ -210,6 +212,8 @@
     "noBookings": "No upcoming appointments found for these details.",
     "cancelSuccess": "Appointment cancelled successfully.",
     "cancelError": "Failed to cancel appointment.",
-    "confirmCancel": "Are you sure you want to cancel this appointment?"
+    "confirmCancel": "Are you sure you want to cancel this appointment?",
+    "confirmCancelYes": "Yes, cancel",
+    "confirmCancelKeep": "Keep"
   }
 }

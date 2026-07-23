@@ -112,6 +112,8 @@
     "searchPlaceholder": "חפש לפי שם...",
     "noAppointments": "אין תורים מתוזמנים.",
     "cancelConfirm": "האם אתה בטוח שברצונך לבטל תור זה?",
+    "confirmCancelYes": "כן, בטל",
+    "confirmCancelKeep": "השאר",
     "customer": "לקוח",
     "service": "שירות",
     "dateTime": "תאריך ושעה",
@@ -210,6 +212,8 @@
     "noBookings": "לא נמצאו תורים עתידיים לפרטים אלו.",
     "cancelSuccess": "התור בוטל בהצלחה.",
     "cancelError": "ביטול התור נכשל.",
-    "confirmCancel": "האם אתה בטוח שברצונך לבטל את התור?"
+    "confirmCancel": "האם אתה בטוח שברצונך לבטל את התור?",
+    "confirmCancelYes": "כן, בטל",
+    "confirmCancelKeep": "השאר"
   }
 }

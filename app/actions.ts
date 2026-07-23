@@ -81,9 +81,10 @@ export async function cancelAppointment(formData: FormData) {
   if (!id) return
 
   await processCancellation(id)
-  
-  // Refresh the admin page data
-  revalidatePath('/admin')
+
+  // Refresh the admin page data. The route is locale-prefixed
+  // (/he/admin, /en/admin), so plain '/admin' never matched anything.
+  revalidatePath('/[locale]/admin', 'page')
 }
 
 // --- PUBLIC ACTIONS (Booking) ---
