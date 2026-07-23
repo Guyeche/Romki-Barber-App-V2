@@ -210,6 +210,8 @@
     "description": "Enter your details to view and cancel your upcoming appointments.",
     "findBookings": "Find Bookings",
     "noBookings": "No upcoming appointments found for these details.",
+    "missingFields": "Please fill in your name and email.",
+    "fetchError": "Failed to load appointments. Please try again.",
     "cancelSuccess": "Appointment cancelled successfully.",
     "cancelError": "Failed to cancel appointment.",
     "confirmCancel": "Are you sure you want to cancel this appointment?",
